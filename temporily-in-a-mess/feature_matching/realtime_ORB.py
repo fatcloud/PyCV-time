@@ -19,7 +19,7 @@ img1 = img1 = cv2.imread('box.png', 0)
 cv2.imshow('source', img1)
 while True:
     
-    img2 = cv2.flip(cv2.cvtColor(cam.read(), cv2.COLOR_BGR2GRAY), 1)
+    img2 = cv2.cvtColor(cam.read(), cv2.COLOR_BGR2GRAY)
     k = cv2.waitKey(5)
     if k == ord('s'):
         img1 = img2.copy()
