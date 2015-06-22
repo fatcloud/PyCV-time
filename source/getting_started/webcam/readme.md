@@ -49,15 +49,15 @@
 	    key_code = cv2.waitKey(10)
 
 	
-這個迴圈裡的內容不多，
+這個迴圈裡的內容只有四行程式碼，依序解讀他的功能分別是：
 
-1. ret, frame = cap.read() 讀取影像存到 frame 裡。
+1. 讀取影像存到 frame 裡
 
-2. cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY) 把 frame 的顏色從藍綠紅彩色轉換成灰階。
+2. 把 frame 的顏色從藍綠紅彩色轉換成灰階
 
 3. imshow 把影像用一個視窗顯示出來。
 
-4. waitKey(10) 等待鍵盤命令 10ms（如果沒有偵測到任何按鍵信號會回傳 -1）
+4. waitKey(10) 等待鍵盤命令 10ms，把收到的信號存入 key_code（沒信號的話會回傳 -1）
 
 比較特別的是 imshow 與 waitKey 之間有種神秘的關係，
 沒有呼叫 waitKey 之前，
@@ -75,20 +75,13 @@ cv2.destroyAllWindows() 關閉所有視窗
 
 ## 練習
 
-在 cvtColor 那行程式之後，
-用 threshold 函數把灰階處理過的影像 frame\_gray 依據亮度門檻調成黑白影像 frame\_thm
+使用 threshold 函數把灰階處理過的影像依亮度門檻調成黑白影像再顯示出來，
+參考做法：
 
-	ret, frame_th = cv2.threshold(frame_gray,127,255,cv2.THRESH_BINARY)
+	ret, frame_th = cv2.threshold(frame_gray, 127, 255, cv2.THRESH_BINARY)
 
-同時要記得把 imshow 的輸出影像 frame\_gray 也改成被處理過的 frame\_th
-
-	cv2.imshow('Press any key to exit', frame_th)
-
-這樣就可以看到以下畫面
 
 ![](threshold.png)
 
-試著改變 threshold 函數裡的其它參數，
-像是 127 這個門檻值可以改成 0 ~ 255 之間的任意數字，
-處理模式 THRESH\_BINARY 也可以改成 THRESH\_BINARY\_INV 或 THRESH\_TRUNC，
-詳見 [api 文件](http://docs.opencv.org/modules/imgproc/doc/miscellaneous_transformations.html#threshold)
+想更深入瞭解 threshold 可以參考 [教學](https://opencv-python-tutroals.readthedocs.org/en/latest/py_tutorials/py_imgproc/py_thresholding/py_thresholding.html#thresholding)
+或者 [api 文件](http://docs.opencv.org/modules/imgproc/doc/miscellaneous_transformations.html#threshold)
