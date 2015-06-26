@@ -1,6 +1,5 @@
 ## 自我介紹
 
-![](https://fbcdn-sphotos-g-a.akamaihd.net/hphotos-ak-xfa1/t31.0-8/1907884_10152279454311727_7669197674284834884_o.jpg)
 
 Hi 我是坤鴻
 
