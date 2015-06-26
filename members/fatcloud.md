@@ -18,9 +18,6 @@ Computer Vision 是嚮往已久但是最近才開始學的技術，
 
 ## 圖集
 
-![](https://fbcdn-sphotos-g-a.akamaihd.net/hphotos-ak-xta1/v/t1.0-9/11425071_10153420321614793_8451487453811900136_n.jpg?oh=fe81edc9d51e052f04d51d9d0be5afde&oe=562BE9C9&__gda__=1445264516_47b532790401dccf51c64ee63685bfa2)
-
-
 ![](https://fbcdn-sphotos-a-a.akamaihd.net/hphotos-ak-xpf1/t31.0-8/1920962_10153420321609793_632703212131458709_o.jpg)
 
 
