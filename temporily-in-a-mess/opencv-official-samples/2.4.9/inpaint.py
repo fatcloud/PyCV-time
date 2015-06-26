@@ -22,7 +22,7 @@ from common import Sketcher
 if __name__ == '__main__':
     import sys
     try: fn = sys.argv[1]
-    except: fn = '../cpp/fruits.jpg'
+    except: fn = 'data/starry_night.jpg'
     print __doc__
 
     img = cv2.imread(fn)

@@ -1,5 +1,5 @@
 """
-Press 's' to take a picture or 'l' to load one and start real-time
+Press 's' to take a picture and start matching image real-time
 """
 
 import cv2
@@ -8,6 +8,8 @@ from cam import MyCam
 
 from fmatch import draw_match
 
+
+print __doc__
 
 MIN_MATCH_COUNT = 10
 

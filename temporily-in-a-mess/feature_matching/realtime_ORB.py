@@ -1,5 +1,5 @@
 """
-Press 's' to take a picture or 'l' to load one and start real-time
+Press 's' to take a picture and start matching image real-time
 """
 
 import cv2
@@ -7,6 +7,8 @@ import numpy as np
 from cam import MyCam
 
 from fmatch import draw_match
+
+print __doc__
 
 MIN_MATCH_COUNT = 10
 
@@ -18,7 +20,7 @@ img1 = img1 = cv2.imread('box.png', 0)
 
 cv2.imshow('source', img1)
 while True:
-    
+
     img2 = cv2.cvtColor(cam.read(), cv2.COLOR_BGR2GRAY)
     k = cv2.waitKey(5)
     if k == ord('s'):
