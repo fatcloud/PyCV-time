@@ -5,4 +5,4 @@ def imgproc(frame):
 
 
 if __name__ == "__main__":
-    webcam_gui()
+    webcam_gui(imgproc)
