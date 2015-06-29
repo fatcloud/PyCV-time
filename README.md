@@ -8,9 +8,10 @@
 拍電視時間是免費活動，不過第一次參加的朋友，必須準備一份自我介紹，並且上傳到 PyCV-time/member 資料夾底下，做法大致是：
 
 1. 按右上角的 Fork 按鈕把整份專案複製到你的帳號下
-2. 把你的自介檔放進 member 資料夾底下，再提出 pull request
+2. 在 member 資料夾底下新增你的自介檔
+3. 再向這裡(fatcloud/PyCV-time)提出 pull request
 
-你的 pull request 被接受以後，
+當你的 pull request 被接受以後，
 就會被加進共作群組裡，
 以後就可以直接 push 更新到這個專案裡面。
 
