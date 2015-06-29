@@ -26,10 +26,15 @@ def imgproc(frame):
     cv2.drawContours(cpframe, contours, -1, (0,255,0), 3)
     cv2.imshow('cpframe', cpframe)
     
-    # do various tests and modification
+    # ================== TODO ===================
+    
+    # Modify these code to suit your need
     contours = [ctr for ctr in contours if cv2.contourArea(ctr) > 100]
     contours = [cv2.approxPolyDP(ctr, 5 , True) for ctr in contours]
     contours = [ctr for ctr in contours if cv2.isContourConvex(ctr)]
+    
+    # ============================================
+    
     
     # draw on the frame
     cv2.drawContours(frame, contours, -1, (0,255,0), 3)
