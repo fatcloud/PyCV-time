@@ -1,17 +1,17 @@
 import cv2
 
 
+def nothing(x):
+    pass
+
 def webcam_gui(filter_func, video_src=0):
 
     cap = cv2.VideoCapture(video_src)
     key_code = -1
     
     while(key_code == -1):
-        t = cv2.getTickCount()
         # read a frame
         ret, frame = cap.read()
-        fps = cv2.getTickFrequency() / (cv2.getTickCount() - t) 
-        print("Frame rate: " + str(fps))
         
         # run filter with the arguments
         frame_out = filter_func(frame)
@@ -26,7 +26,29 @@ def webcam_gui(filter_func, video_src=0):
     cv2.destroyAllWindows()
 
 
+def trackbar_gui(filter_func, video_src=0):
+    cap = cv2.VideoCapture(video_src)
+    cv2.namedWindow('window')
+    cv2.createTrackbar('aa', 'window', 0, 255, nothing)
+    key_code = -1
+    
+    while(key_code == -1):
+        aa = cv2.getTrackbarPos('aa','window')
+        print aa
+        # read a frame
+        ret, frame = cap.read()
         
+        # run filter with the arguments
+        frame_out = filter_func(frame)
+        
+        # show the image
+        cv2.imshow('window', frame_out)
+        
+        # wait for the key
+        key_code = cv2.waitKey(10)
+
+    cap.release()
+    cv2.destroyAllWindows()
 
 def edge_filter(frame_in):
     # convert into gray scale
@@ -49,4 +71,4 @@ def gray_filter(frame_in):
     
     
 if __name__ == "__main__":
-    webcam_gui(gray_filter, video_src=1)
+    webcam_gui(edge_filter)
