@@ -1,31 +1,20 @@
+'''
+find_parallelograms.py
+=========
+Spot all the parallelograms by webcam
+
+Usage
+-----
+python find_parallelograms.py
+
+'''
+
+
 import numpy as np
 from numpy import linalg as LA
 
 import cv2
-from webcam_gui import webcam_gui
-
-def find_parallelograms(contours):
-    parallelograms = []
-    for ctr in contours:
-        area = cv2.contourArea(ctr)
-        
-        # area test
-        if area < 400: continue
-        
-        simp_ctr = cv2.approxPolyDP(ctr, 3, True)
-        simp_area = cv2.contourArea(simp_ctr)
-        if simp_area < 400: continue
-        if len(simp_ctr) != 4: continue
-        
-        edges = [LA.norm(a-b) for a, b in zip(simp_ctr, np.roll(simp_ctr, 2))]
-        
-        if (1 - edges[0] / edges[2]) ** 2 > 0.01: continue
-        if (1 - edges[1] / edges[3]) ** 2 > 0.01: continue
-        
-        parallelograms.append(simp_ctr)
-        
-    return parallelograms
-
+from cam import OpenCV_Cam
 
 
 def contour_proc(frame, debug=False):
@@ -65,5 +54,30 @@ def contour_proc(frame, debug=False):
     
     return frame
 
+    
+def find_parallelograms(contours):
+    parallelograms = []
+    for ctr in contours:
+        area = cv2.contourArea(ctr)
+        
+        # area test
+        if area < 400: continue
+        
+        simp_ctr = cv2.approxPolyDP(ctr, 3, True)
+        simp_area = cv2.contourArea(simp_ctr)
+        if simp_area < 400: continue
+        if len(simp_ctr) != 4: continue
+        
+        edges = [LA.norm(a-b) for a, b in zip(simp_ctr, np.roll(simp_ctr, 2))]
+        
+        if (1 - edges[0] / edges[2]) ** 2 > 0.01: continue
+        if (1 - edges[1] / edges[3]) ** 2 > 0.01: continue
+        
+        parallelograms.append(simp_ctr)
+        
+    return parallelograms
+
+    
 if __name__ == "__main__":
-    webcam_gui(contour_proc)
+    cam = OpenCV_Cam()
+    cam.cam_loop(contour_proc)
