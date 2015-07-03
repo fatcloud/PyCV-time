@@ -11,8 +11,8 @@
 想學習OpenCV是因為PCR或蛋白質電泳分析都可以使用OpenCV:<br>
 ![](http://4.bp.blogspot.com/-KyM0qmIwSKs/VZYHGiQ_GuI/AAAAAAAAFOw/yYQqhi1wA8o/s640/%25E8%259E%25A2%25E5%25B9%2595%25E6%2593%25B7%25E5%258F%2596%25E7%2595%25AB%25E9%259D%25A2%2B%25287%2529.png)
 
-第一個想拿來練習OpenCV-Python的專案是做個[棉花糖大砲](http://www.techbang.com/posts/16605-orientation-of-facial-recognition-marshmallow-blaster-you-want-to-buy "能臉部定位的棉花糖大炮")送給小外甥:<br>
+第一個想拿來練習OpenCV-Python的專案是做個<a href="http://www.techbang.com/posts/16605-orientation-of-facial-recognition-marshmallow-blaster-you-want-to-buy" target="_blank">棉花糖大砲</a>送給小外甥:<br>
 ![](http://4.bp.blogspot.com/-u3ncNCPt1Ig/VZYJFaauhCI/AAAAAAAAFO8/SBAjajgf49s/s640/%25E6%2593%25B7%25E5%258F%2596_2015_07_03_12_00_28_798.png)
 
-第一週練就了以OpenCV進行[相片](https://realpython.com/blog/python/face-recognition-with-python/ "Face Recognition With Python")和[攝影機](https://realpython.com/blog/python/face-detection-in-python-using-a-webcam/ "Face Detection in Python Using a Webcam")即時人臉辨識─ <br>
+第一週練就了以OpenCV進行<a href="https://realpython.com/blog/python/face-recognition-with-python/" target="_blank">相片</a>和<a href="https://realpython.com/blog/python/face-detection-in-python-using-a-webcam/" target="_blank">即時攝影機</a>人臉辨識─ <br>
 ![](https://github.com/shantnu/FaceDetect/raw/master/abba_face_detected.jpg)
