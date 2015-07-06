@@ -8,7 +8,8 @@ from cam import OpenCV_Cam
 
 cam = OpenCV_Cam()
 img = cam.read()
-M = calibrate('screen_img', img)
+
+M = calibrate('laser.png', img)
 find_laser = mapping(M)
 canvas = np.full((600,800,4), 255, dtype=np.uint8)
 
@@ -21,6 +22,7 @@ while True:
     cv2.imshow(,out)
     k = waitkey(10)
     if k == ord( 'c' ):
-        calibrate again
+        img = cam.read()
+        M = calibrate('laser.png', img)
     else if  k == ord( 'r' ):
         canvas = np.full((600,800,4), 255, dtype=np.uint8)
