@@ -1,7 +1,3 @@
-def mapping(M):
-    def f(X):
-        return M*X
-    return f
 
 image = cap.read()
 M = calibrate( 'screen_img', image )
