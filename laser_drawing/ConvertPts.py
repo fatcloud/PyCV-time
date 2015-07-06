@@ -35,8 +35,8 @@ def calibrate(image_name, frame):
     screen_corners = cv2.perspectiveTransform(pts, screen2cam_matrix)
     
     
-    if False in [cv2.isContourConvex(self._screen_corners),
-                 cv2.contourArea(self._screen_corners) > AREA_THRESHOLD,
+    if False in [cv2.isContourConvex(screen_corners),
+                 cv2.contourArea(screen_corners) > AREA_THRESHOLD,
                  sum(matchesMask) > MATCH_THRESHOLD]:
     
         screen2cam_matrix = None
