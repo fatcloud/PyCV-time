@@ -49,6 +49,14 @@ def calibrate(image_name, frame):
 	return cam2screen_matrix
 
 def mapping(M):
+	"""
+	Input perspectiveTransform Matrix
+	Output a function that performs given transform
+	"""
     def f(X):
+    	"""
+    	Input a tuple of point
+    	Output transformed point
+    	"""
         return cv2.perspectiveTransform(X, M)
     return f
