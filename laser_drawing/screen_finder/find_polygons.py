@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-from cam import MyCam
+from cam import OpenCV_Cam
 from time import time
 
 def draw_oriented_polylines(img, pts_in, is_closed, color_start, thickness=1, color_end=(0,0,0)):
@@ -72,7 +72,7 @@ def find_polygons(gray_image_in, edge_num, tolerance=0.1, area_threshold=100, co
     return polygons
     
 if __name__ == "__main__":
-    cam = MyCam()
+    cam = OpenCV_Cam()
     while True:
         img = cam.read()
         polygons = find_polygons(img, 4)

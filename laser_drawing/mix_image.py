@@ -6,16 +6,13 @@ import numpy as np
 
 
 
-def mix_image(back, fore, (x, y), in_place=False):
+def mix_image(back, fore, (x, y)=(0, 0)):
     """Back is a BGR image in background. Fore stands for a BGRA image to be paste in foreground.
     Fore will be paste at (x,y) in back. This function also support out-of bound (x,y)"""
     
     x, y = round(x), round(y)
     
-    if in_place:
-        ret = back
-    else:
-        ret = back.copy()
+    ret = back.copy()
     
     fh, fw, fd = fore.shape
     bh, bw, bd = ret.shape

@@ -1,19 +1,29 @@
 """
 press 'p' to print camera information
 press 's' to set camera property. Try 'p' first to see property names then insert them in console.
-press 'f' to print measured frame rate (the frequency MyCam.read() is called).
+press 'f' to print measured frame rate (the frequency VideoCapture::read() is called).
 """
 
 import cv2
 from time import clock
 
 
-class MyCam(object):
+class OpenCV_Cam(object):
 
     def __init__(self, src=None):
         self.start_cam(src)
         self.__fcount, self.__frate, self.__start = 0, 0, clock()
     
+    @staticmethod
+    def cam_count():
+        cam_idx = 0
+        cap = cv2.VideoCapture(cam_idx)
+        while cap.read()[0]:
+            cam_idx += 1
+            cap = cv2.VideoCapture(cam_idx)
+            
+        return cam_idx
+
     def start_cam(self, src=None):
         if src is not None:
             self.cam = VideoCapture(src)
@@ -21,9 +31,17 @@ class MyCam(object):
                 raise ValueError('Cannot open ' + src + 'as VideoCapture')
             return
         
-        self.cam = cv2.VideoCapture(1)
+        idx = 1
+        cam1, cam2 = cv2.VideoCapture(0), cv2.VideoCapture(1)
+        while(cam2.read()[0]):
+            cam1.release()
+            cam1 = cam2
+            idx += 1
+            cam2 = cv2.VideoCapture(idx)
+        
+        self.cam = cam1
         if not self.cam.isOpened():
-            self.cam = cv2.VideoCapture(0)
+            raise Error('Cannot open any camera')
         
     @property
     def size(self):
@@ -66,11 +84,15 @@ class MyCam(object):
         print cmd
         exec cmd
     
-    def cam_loop(self, func, params = ()):
+    def cam_loop(self, func = lambda x:x , params = ()):
         while True:
             input = self.read()
             output = func(input, *params)
-            cv2.imshow('cam.read()', output)
+            
+            window_name = func.__name__
+            if window_name == '<lambda>': window_name = 'camera image'
+            
+            cv2.imshow(window_name, output)
             k = cv2.waitKey(5)
             if k == 27:
                 break
@@ -80,8 +102,13 @@ class MyCam(object):
                     print i,'=', info[i]
             elif k == ord('s'):
                 p = raw_input('type property:')
-                v = raw_input('type value:')
-                self.set(p,v)
+                if ('cv2.cv.CV_CAP_PROP_' + p) not in dir(cv2.cv):
+                    print p, ' is not a legal property name.'
+                    print 'Here are legal ones:', [x[12:] for x in dir(cv2.cv) if 'CV_CAP_PROP' in x]
+                else:
+                    v = raw_input('type value:')
+                    self.set(p,v)
+                        
             elif k == ord('f'):
                 print self.frame_rate
     
@@ -97,11 +124,9 @@ class MyCam(object):
         self.cam.release()
     
 if __name__ == '__main__':
-    cam = MyCam()
+    print __doc__
+    cam = OpenCV_Cam()
     cam.size = (800, 600)
     
-    def dummy(input):
-        return input
-        
-    cam.cam_loop(dummy)
+    cam.cam_loop()
         

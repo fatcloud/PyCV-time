@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-from cam import MyCam
+from cam import OpenCV_Cam
 from find_polygons import draw_oriented_polylines
 from fmatch import draw_match
 
@@ -34,18 +34,29 @@ class ScreenFinder(object):
     def screen_is_found(self):
         return (self.cam2screen_matrix is not None)
     
+    
     def clear_found(self):
         self.cam2screen_matrix = None
         self.screen2cam_matrix = None
         self._screen_corners = None
     
-    def calibrate_color(self, cam_img, screen_img):
-        cam_shot = self.find_top_view(cam_img)
-        screen_img
     
     def set_screen_img(self, screen_img):
         self._screen_features = self._detector.detectAndCompute(screen_img,None)
         self._screen_img = screen_img
+            
+    
+    def find_screen_loop(self, cam, debug=False):
+        self.clear_found()
+        while not self.screen_is_found:
+            cam_img = cam.read()
+            self.find_screen_img(cam_img, debug=debug)
+            
+            k = cv2.waitKey(5)
+            if k == 27:
+                break
+    
+    
     
     def find_screen_img(self, cam_img, screen_img=None, debug=False):
         """
@@ -84,8 +95,8 @@ class ScreenFinder(object):
             # check the property of the corners found out there
             self.screen2cam_matrix, mask = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC,5.0)
             matchesMask=mask.ravel().tolist()
-
-            h,w = self._screen_img.shape
+            
+            h,w = self._screen_img.shape[0:2]
             pts = np.float32([ [0,0],[0,h-1],[w-1,h-1],[w-1,0] ]).reshape(-1,1,2)
             self._screen_corners = cv2.perspectiveTransform(pts, self.screen2cam_matrix)
             
@@ -119,8 +130,12 @@ class ScreenFinder(object):
 
         return img
         
+        
+    def reverse_transform(cam_pts):
+        return cv2.perspectiveTransform(cam_pts, self.cam2screen_matrix)
     
-    def find_top_view(self, cam_img):
+    
+    def screen_top_view(self, cam_img):
         shape = (self._screen_img.shape[1], self._screen_img.shape[0])
         img = cv2.warpPerspective(cam_img, self.cam2screen_matrix, shape)
         return img
@@ -128,11 +143,12 @@ class ScreenFinder(object):
 
 if __name__ == '__main__':
     sf = ScreenFinder()
-    cam = MyCam()
+    cam = OpenCV_Cam()
     cam.size = (640, 480)
     
-    img = cv2.imread('seabunny_lying.png', 0)
-    cv2.imshow('source', img)
+    color_img = cv2.imread('wood.png')
+    img = cv2.cvtColor(color_img, cv2.COLOR_BGR2GRAY)
+    cv2.imshow('source', color_img)
 
     sf.set_screen_img(img)
     if img.shape[0] * img.shape[1] > cam.size[0] * cam.size[1]:
@@ -141,16 +157,10 @@ if __name__ == '__main__':
     while True:
         cam_img = cam.read()
         
-        while not sf.screen_is_found:
-            cam_img = cam.read()
-            sf.find_screen_img(cam_img, debug=True)
-            cv2.imshow('Type \'r\' to search for the screen', sf.draw_screen_boundary(cam_img))
-            k = cv2.waitKey(5)
-            if k == 27:
-                break
+        sf.find_screen_loop(cam, True)
         
         cv2.imshow('Type \'r\' to search for the screen', sf.draw_screen_boundary(cam_img))
-        cv2.imshow('top view', sf.find_top_view(cam_img))
+        cv2.imshow('top view', sf.screen_top_view(cam_img))
         k = cv2.waitKey(5)
         if k == 27:
             break
