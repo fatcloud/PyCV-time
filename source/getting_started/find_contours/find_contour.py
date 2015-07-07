@@ -9,7 +9,7 @@ def imgproc(frame):
     cv2.imshow('gray', gray)
     
     # convert image to black and white and show it
-    thresh1, thresh = cv2.threshold(gray, 100, 255, cv2.THRESH_BINARY)
+    thresh1, thresh = cv2.threshold(gray, 60, 255, cv2.THRESH_BINARY)
     cv2.imshow('thresh', thresh)
     
     # find contours!
@@ -21,11 +21,10 @@ def imgproc(frame):
     cv2.imshow('cpframe', cpframe)
     
     # do various tests and modification
-    contours = [ctr for ctr in contours if cv2.contourArea(ctr) > 10]
-    contours = [cv2.approxPolyDP(ctr, 5  , True) for ctr in contours]
+    contours = [ctr for ctr in contours if cv2.contourArea(ctr) > 100]
+    contours = [cv2.approxPolyDP(ctr, 30 , True) for ctr in contours]
     contours = [ctr for ctr in contours if cv2.isContourConvex(ctr)]
-    contours = [ctr for ctr in contours if len(ctr) == 4]
-
+    
     # draw on the frame
     cv2.drawContours(frame, contours, -1, (0,255,0), 3)
     
