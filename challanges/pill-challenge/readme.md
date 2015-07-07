@@ -35,7 +35,6 @@
     # ================== TODO ===================
     
     # Every pill is surrounded by a contour in variable "contours" now
-    # but some pills are split into two contours!
     
     # ============================================
 
