@@ -4,7 +4,7 @@
 
 ### 情境敘述
 
-湯姆先生是一個退休的老人，生活非常的無聊。最近他為了尋找生命中的第二春，跑去參加相親認識了一個妹子叫安妮。安妮是一個護理師，她最近才因為送錯藥而險些被醫院開除。湯姆先生聽了安妮的遭遇，為了愛他決定用自己龐大的退休金中的九牛一毛發包寫個程式，自動化地遍認藥丸有沒有送錯，你能不能接下這個案子滿足他的需求呢？
+湯姆先生是一個退休的老人，生活非常的無聊。最近他為了尋找生命中的第二春，跑去參加相親認識了一個妹子叫安妮。安妮是一個護理師，她最近才因為送錯藥而險些被醫院開除。湯姆先生聽了安妮的遭遇，為了愛他決定用自己龐大的退休金中的九牛一毛發包寫個程式，自動化地辨認藥丸有沒有送錯，你能不能接下這個案子滿足他的需求呢？
 
 
 ### 藥丸挑戰
@@ -29,13 +29,12 @@
 
 ### 程式範例
 
-讀圖片、抓藥丸邊緣以及寫字的程式碼已經寫好在 [PyCV-time/challenges/pill_reconition.py](https://github.com/fatcloud/PyCV-time/blob/master/challanges/pill-challenge/pill_reconition.py)，
+讀圖片、抓藥丸邊緣路徑以及顯示文字的程式碼已經寫好在 [PyCV-time/challenges/pill_reconition.py](https://github.com/fatcloud/PyCV-time/blob/master/challanges/pill-challenge/pill_reconition.py)，
 想參加挑戰只需尋找 TODO 部分插入自己的演算法即可。
 
-	# ================== TODO ===================
+    # ================== TODO ===================
     
     # Every pill is surrounded by a contour in variable "contours" now
-    # but some pills are split into two contours!
     
     # ============================================
 
