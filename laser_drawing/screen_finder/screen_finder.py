@@ -131,8 +131,9 @@ class ScreenFinder(object):
         return img
         
         
-    def reverse_transform(cam_pts):
-        return cv2.perspectiveTransform(cam_pts, self.cam2screen_matrix)
+    def reverse_transform(self, cam_pts):
+        pts = np.float32(cam_pts).reshape(-1,1,2)
+        return cv2.perspectiveTransform(pts, self.cam2screen_matrix)
     
     
     def screen_top_view(self, cam_img):
