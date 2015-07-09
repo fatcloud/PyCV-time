@@ -7,8 +7,11 @@ def webcam_gui(filter_func, video_src=0):
     key_code = -1
     
     while(key_code == -1):
+        t = cv2.getTickCount()
         # read a frame
         ret, frame = cap.read()
+        fps = cv2.getTickFrequency() / (cv2.getTickCount() - t) 
+        print("Frame rate: " + str(fps))
         
         # run filter with the arguments
         frame_out = filter_func(frame)
@@ -46,4 +49,4 @@ def gray_filter(frame_in):
     
     
 if __name__ == "__main__":
-    webcam_gui(edge_filter)
+    webcam_gui(gray_filter, video_src=1)
