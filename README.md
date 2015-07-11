@@ -21,6 +21,6 @@
 ### 檔案結構
 
 - challenges 挑戰問題!
-- learn-by-example 學習用的範例，新來的朋友想跟上就把這裡的程式碼下載回去玩
+- experiments 所有的程式小實驗
 - members  成員自介
 - temporily-in-a-mess 不要看，很混亂
