@@ -37,6 +37,9 @@ def imgproc(frame):
     return frame
 
 if __name__ == "__main__":
-    pills = cv2.imread('pill.png')
+    import os
+    dir = os.path.dirname(__file__)
+    pills = cv2.imread(dir + '\pill.png')
+    
     cv2.imshow('pill challenge',imgproc(pills))
     cv2.waitKey(0)
