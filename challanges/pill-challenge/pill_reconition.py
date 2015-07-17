@@ -2,14 +2,13 @@ import cv2
 import numpy as np
 def imgproc(frame):
     
-    
     # convert color to gray scale and show it
     
-    background = np.full_like(frame, 0) 
+    background = np.full_like(frame, 0)
     background[:,:,1] = 162
     background[:,:,2] = 14
     
-
+    
     img = frame - background
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     
@@ -29,40 +28,18 @@ def imgproc(frame):
     # Every pill is surrounded by a contour in variable "contours" now
     
     # ============================================
-    color = []
-    index = 0
-    print len(contours)
-    print (frame.shape, img.shape, gray.shape)
-    for ctr in contours:
-        M = cv2.moments(ctr)
-            
-        cy = int(M['m10']/M['m00'])
-        cx = int(M['m01']/M['m00'])
-        print index, frame[cx,cy,:]
-        color.append(frame[cx,cy, :])
-        index += 1
-
-    index = 0
+    
     for ctr in contours:
         m = cv2.mean(ctr)
         org = int(m[0]), int(m[1])
-        org_step = int(m[0]+10), int(m[1]+10)
-        # cv2.putText(frame, "pill", org, cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
-        # color[index] = [255 255 255]
-        if np.array_equal(color[index], np.array([255,255,255])):
-            color_str = 'W'
-        elif color[index][0] == 0:
-            color_str = 'Y'
-        else:
-            color_str = '?'
-
-        cv2.putText(frame, color_str, org, cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
-        cv2.putText(frame, str(index), org_step, cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
-        index +=1
+        cv2.putText(frame, "pill", org, cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
+    
     return frame
 
 if __name__ == "__main__":
-    pills = cv2.imread('pill.png')
-    print pills.shape
+    import os
+    dir = os.path.dirname(__file__)
+    pills = cv2.imread(dir + '\pill.png')
+    
     cv2.imshow('pill challenge',imgproc(pills))
     cv2.waitKey(0)
