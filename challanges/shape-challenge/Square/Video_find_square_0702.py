@@ -53,9 +53,10 @@ def find_square(frame_in):
     frame_out = frame_in.copy()
     frame_gray = cv2.cvtColor(frame_in, cv2.COLOR_BGR2GRAY)
     #thresh = threshold(frame_gray,110)
-    thresh = adap_threshold(frame_gray)  
-    cv2.imshow('Threhold',thresh)
-    contours, hry = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    thresh = adap_threshold(frame_gray)
+    frame_blur = cv2.blur(thresh, (3,3))
+    #cv2.imshow('Threhold',thresh)
+    contours, hry = cv2.findContours(frame_blur, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     #identify squares
     squares = []
     for cnt in contours:
