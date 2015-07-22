@@ -127,6 +127,10 @@ if __name__ == '__main__':
     print __doc__
     cam = OpenCV_Cam()
     cam.size = (800, 600)
+
+    info = cam.info
+    for i in info:
+        print i,'=', info[i]
     
     cam.cam_loop()
         
