@@ -28,18 +28,29 @@ def imgproc(frame):
     
     # Every pill is surrounded by a contour in variable "contours" now
     
-    # ============================================
+    # ============================================   
+
     color = []
+    colors = []
     index = 0
     print len(contours)
     print (frame.shape, img.shape, gray.shape)
     for ctr in contours:
-        M = cv2.moments(ctr)
-            
-        cy = int(M['m10']/M['m00'])
+        M = cv2.moments(ctr)      
+        cy = int(M['m10']/M['m00']) 
         cx = int(M['m01']/M['m00'])
-        print index, frame[cx,cy,:]
+        area = cv2.contourArea(ctr)
+        cy2 = cy + 2
+        cx2 = cx + 2
+        cy3 = cy - 2
+        cx3 = cx - 2
+        cy4 = cy + 2
+        cx4 = cx - 2
+        cy5 = cy - 2
+        cx5 = cx + 2       
+        print index, frame[cx,cy,:], frame[cx2,cy2,:], frame[cx3,cy3,:], frame[cx4,cy4,:], frame[cx5,cy5,:], area
         color.append(frame[cx,cy, :])
+        colors.append([frame[cx2, cy2, :], frame[cx3, cy3, :], frame[cx4, cy4, :], frame[cx5, cy5, :]])
         index += 1
 
     index = 0
@@ -50,11 +61,28 @@ def imgproc(frame):
         # cv2.putText(frame, "pill", org, cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
         # color[index] = [255 255 255]
         if np.array_equal(color[index], np.array([255,255,255])):
-            color_str = 'W'
-        elif color[index][0] == 0:
-            color_str = 'Y'
+            if area > 3000.0:
+                color_str = "10"
+            elif 3000.0 > area and area > 1000.0:
+                color_str = "7"
+            else: 
+                color_str = "9" 
+        elif np.array_equal(color[index], np.array([0,223,223])):
+            color_str = '5'    
+        elif np.array_equal(color[index], np.array([158,148,255])):
+            color_str = '6'
+        elif np.array_equal(color[index], np.array([212,255,255])):
+            color_str = '8'
+        elif np.array_equal(color[index], np.array([255,60,251])):
+            color_str = '2'
+        elif np.array_equal(color[index], np.array([204,244,0])):
+            color_str = '1'                
         else:
-            color_str = '?'
+            if any([np.array_equal(x, np.array([0,0,0])) for x in colors[index]]):
+                color_str = '3'
+                # print color2[index], color3[index], color4[index], color5[index]
+            else: 
+                color_str = '4'
 
         cv2.putText(frame, color_str, org, cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
         cv2.putText(frame, str(index), org_step, cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
