@@ -61,6 +61,7 @@ def imgproc(frame):
         # cv2.putText(frame, "pill", org, cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
         # color[index] = [255 255 255]
         if np.array_equal(color[index], np.array([255,255,255])):
+            area = cv2.contourArea(ctr)
             if area > 3000.0:
                 color_str = "10"
             elif 3000.0 > area and area > 1000.0:
@@ -85,7 +86,7 @@ def imgproc(frame):
                 color_str = '4'
 
         cv2.putText(frame, color_str, org, cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
-        cv2.putText(frame, str(index), org_step, cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+        #cv2.putText(frame, str(index), org_step, cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
         index +=1
     return frame
 
