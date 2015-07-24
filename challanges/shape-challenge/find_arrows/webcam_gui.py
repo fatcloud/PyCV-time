@@ -46,4 +46,5 @@ def gray_filter(frame_in):
     
     
 if __name__ == "__main__":
+    cv2.VideoCapture.set(CV_CAP_PROP_FPS, 10) 
     webcam_gui(edge_filter)
