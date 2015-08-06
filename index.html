@@ -11,22 +11,30 @@
 
 
 <body>
-    <div class="map">
-        <iframe src="map.html"></iframe>
-        <div class="search-bar">
-            <div class="input-group">
-                <input type="text" class="form-control" aria-label="..."
-                    placeholder="Type experiment or function name here">
-                <div class="input-group-btn">
-                
-                  <button type="button" class="btn btn-primary">
-                  <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-                  </button>
-                
-                </div>
+
+    <!-- search bar -->
+    <div class="search-bar">
+        <div class="input-group">
+            <input type="text" class="form-control" aria-label="..."
+                placeholder="Type experiment or function name here">
+            <div class="input-group-btn">
+            
+              <button type="button" class="btn btn-primary">
+              <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+              </button>
+            
             </div>
         </div>
     </div>
+
+    <!-- the map -->
+    <div id = "techtree"></div>
+    
+    <!-- show readme -->
+    
+
+    <script src="js/d3.v3.min.js"></script>
+    <script src="js/map.js"></script>
 </body>
 
 

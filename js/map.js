@@ -1,31 +1,5 @@
-<!DOCTYPE html>
-<meta charset="utf-8">
-
-
-<style>
-
-    body {
-        overflow: hidden;
-        margin: 0;
-    }
-
-    text {
-        font-family: sans-serif;
-        pointer-events: none;
-    }
-    
-</style>
-
-
-<body>
-
-<script src="js/d3.v3.min.js"></script>
-<script>
-
-
 var w = window.innerWidth;
 var h = window.innerHeight;
-
 var keyc = true,
     keys = true,
     keyt = true,
@@ -76,7 +50,7 @@ var max_stroke = 4.5;
 var max_base_node_size = 36;
 var min_zoom = 0.1;
 var max_zoom = 7;
-var svg = d3.select("body").append("svg");
+var svg = d3.select("#techtree").append("svg");
 var zoom = d3.behavior.zoom().scaleExtent([min_zoom, max_zoom])
 var g = svg.append("g");
 svg.style("cursor", "move");
@@ -120,8 +94,7 @@ d3.json("graph.json", function(error, graph) {
         .data(graph.nodes)
         .enter().append("g")
         .attr("class", "node")
-
-    .call(force.drag)
+        .call(force.drag)
 
 
     node.on("dblclick.zoom", function(d) {
@@ -130,11 +103,12 @@ d3.json("graph.json", function(error, graph) {
         var dcy = (window.innerHeight / 2 - d.y * zoom.scale());
         zoom.translate([dcx, dcy]);
         g.attr("transform", "translate(" + dcx + "," + dcy + ")scale(" + zoom.scale() + ")");
-
-
     });
 
-
+    node.on("click", function(d){
+        // TODO
+        // show rendered readme.md
+    });
 
 
     var tocolor = "fill";
@@ -195,6 +169,8 @@ d3.json("graph.json", function(error, graph) {
             exit_highlight();
 
         });
+
+
 
     d3.select(window).on("mouseup",
         function() {
@@ -451,8 +427,3 @@ function isNumber(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
 }
 
-
-</script>
-
-
-</body>
