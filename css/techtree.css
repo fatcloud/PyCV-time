@@ -1,0 +1,24 @@
+.techtree {
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+
+.search-bar {
+  position: absolute;
+  width: 400px;
+  padding-left: 0px;
+  padding-right: 0px;
+  top: 20px;
+  left: 20px
+}
+
+#readme {
+  width: 400px;
+  height: 400px;
+  position: absolute;
+  top: 20px;
+  right: 40px;
+}

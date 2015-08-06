@@ -50,7 +50,11 @@ var max_stroke = 4.5;
 var max_base_node_size = 36;
 var min_zoom = 0.1;
 var max_zoom = 7;
-var svg = d3.select("#techtree").append("svg");
+
+var techtree = d3.select("#techtree")
+var svg = techtree.append("svg");
+var readme = techtree.append("div").attr("id", "readme")
+
 var zoom = d3.behavior.zoom().scaleExtent([min_zoom, max_zoom])
 var g = svg.append("g");
 svg.style("cursor", "move");
@@ -168,6 +172,8 @@ d3.json("graph.json", function(error, graph) {
         }).on("mouseout", function(d) {
             exit_highlight();
 
+        }).on("click", function(d) {
+            window.alert("haha")
         });
 
 
