@@ -17,7 +17,7 @@ var keyc = true,
 var focus_node = null,
     highlight_node = null;
 
-var text_center = false;
+var text_center = true;
 var outline = false;
 
 var min_score = 0;
@@ -39,8 +39,8 @@ var force = d3.layout.force()
     .charge(-300)
     .size([w, h]);
 
-var default_node_color = "#ccc";
-//var default_node_color = "rgb(3,190,100)";
+//var default_node_color = "#ccc";
+var default_node_color = "rgb(223,213,213)";
 var default_link_color = "#888";
 var nominal_base_node_size = 8;
 var nominal_text_size = 10;
@@ -121,20 +121,19 @@ d3.json("graph.json", function(error, graph) {
         tocolor = "stroke"
         towhite = "fill"
     }
-
-
-
     var circle = node.append("path")
         .attr("d", d3.svg.symbol()
             .size(function(d) {
-                return Math.PI * Math.pow(size(d.size) || nominal_base_node_size, 2);
+                return 200
+                //return Math.PI * Math.pow(size(d.size) || nominal_base_node_size, 2);
             })
             .type(function(d) {
                 return d.type;
             }))
         .style(tocolor, function(d) {
-            if (isNumber(d.score) && d.score >= 0) return color(d.score);
-            else return default_node_color;
+            // if (isNumber(d.score) && d.score >= 0) return color(d.score);
+            // else return default_node_color;
+            return default_node_color
         })
         //.attr("r", function(d) { return size(d.size)||nominal_base_node_size; })
         .style("stroke-width", nominal_stroke)
@@ -144,8 +143,11 @@ d3.json("graph.json", function(error, graph) {
     var text = g.selectAll(".text")
         .data(graph.nodes)
         .enter().append("text")
-        .attr("dy", ".35em")
         .style("font-size", nominal_text_size + "px")
+        .attr("dy", function(d){
+            return (d.size)*0.05 + "em"
+        })
+        
 
     if (text_center)
         text.text(function(d) {
@@ -172,8 +174,6 @@ d3.json("graph.json", function(error, graph) {
         }).on("mouseout", function(d) {
             exit_highlight();
 
-        }).on("click", function(d) {
-            window.alert("haha")
         });
 
 
