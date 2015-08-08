@@ -124,8 +124,7 @@ d3.json("graph.json", function(error, graph) {
     var circle = node.append("path")
         .attr("d", d3.svg.symbol()
             .size(function(d) {
-                return 200
-                //return Math.PI * Math.pow(size(d.size) || nominal_base_node_size, 2);
+                return Math.PI * Math.pow(size(d.size) || nominal_base_node_size, 2);
             })
             .type(function(d) {
                 return d.type;
