@@ -27,7 +27,7 @@ var color = d3.scale.linear()
     .domain([min_score, (min_score + max_score) / 2, max_score])
     .range(["lime", "yellow", "red"]);
 
-var highlight_color = "blue";
+var highlight_color = "rgb(33,38,240)";
 var highlight_trans = 0.1;
 
 var size = d3.scale.pow().exponent(1)
@@ -59,7 +59,8 @@ var zoom = d3.behavior.zoom().scaleExtent([min_zoom, max_zoom])
 var g = svg.append("g");
 svg.style("cursor", "move");
 
-d3.json("graph.json", function(error, graph) {
+src = document.getElementById("techtree").getAttribute("src")
+d3.json(src, function(error, graph) {
 
     var linkedByIndex = {};
     graph.links.forEach(function(d) {
@@ -144,7 +145,7 @@ d3.json("graph.json", function(error, graph) {
         .enter().append("text")
         .style("font-size", nominal_text_size + "px")
         .attr("dy", function(d){
-            return (d.size)*0.05 + "em"
+            return ((d.size)*0.05 || nominal_base_node_size) * 0.25 + "em"
         })
         
 

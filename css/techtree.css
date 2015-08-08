@@ -16,9 +16,12 @@
 }
 
 #readme {
-  width: 400px;
-  height: 400px;
+  width: 35vw;
+  height: 80vh;
   position: absolute;
-  top: 20px;
-  right: 40px;
+  top: 10vh;
+  right: 8vw;
+  border-radius: 20px;
+
+  background:  rgba(232,239,239, 0.655);
 }
