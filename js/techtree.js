@@ -27,12 +27,11 @@ var force = d3.layout.force()
     .size([w, h]);
 
 //var default_node_color = "#ccc";
-var default_node_color = "rgb(223,213,213)";
 var default_link_color = "#888";
 var nominal_base_node_size = 8;
 var nominal_text_size = 10;
 var max_text_size = 24;
-var nominal_stroke = 1.5;
+var nominal_stroke = 0.5;
 var max_stroke = 4.5;
 var max_base_node_size = 36;
 var min_zoom = 0.1;
@@ -76,17 +75,13 @@ d3.json(src, function(error, graph) {
         .enter().append("line")
         .attr("class", "link")
         .style("stroke-width", nominal_stroke)
-        .style("stroke", function(d) {
-            if (isNumber(d.score) && d.score >= 0) return color(d.score);
-            else return default_link_color;
-        })
 
 
     var node = g.selectAll(".node")
         .data(graph.nodes)
         .enter().append("g")
         .attr("class", "node")
-        .call(force.drag)
+        .call(force.drag);
 
 
     node.on("dblclick.zoom", function(d) {
@@ -109,6 +104,7 @@ d3.json(src, function(error, graph) {
         tocolor = "stroke"
         towhite = "fill"
     }
+
     var circle = node.append("path")
         .attr("d", d3.svg.symbol()
             .size(function(d) {
@@ -117,24 +113,16 @@ d3.json(src, function(error, graph) {
             .type(function(d) {
                 return d.type;
             }))
-        .style(tocolor, function(d) {
-            // if (isNumber(d.score) && d.score >= 0) return color(d.score);
-            // else return default_node_color;
-            return default_node_color
-        })
         //.attr("r", function(d) { return size(d.size)||nominal_base_node_size; })
         .style("stroke-width", nominal_stroke)
-        .style(towhite, "white");
 
-
-    var text = g.selectAll(".text")
-        .data(graph.nodes)
-        .enter().append("text")
-        .style("font-size", nominal_text_size + "px")
-        .attr("dy", function(d){
-            return ((d.size)*0.05 || nominal_base_node_size) * 0.25 + "em"
-        })
-        
+    var text = node.append("text").attr("d", d3.svg.symbol())
+            .style("font-size", nominal_text_size + "px")
+            .text(function(d){ return d.id })
+            .attr("dy", function(d){
+             return ((d.size)*0.05 || nominal_base_node_size) * 0.25 + "em"
+            })
+            ;
 
     if (text_center)
         text.text(function(d) {
@@ -185,11 +173,8 @@ d3.json(src, function(error, graph) {
         if (focus_node === null) {
             svg.style("cursor", "move");
             if (highlight_color != "white") {
-                circle.style(towhite, "white");
-                text.style("font-weight", "normal");
-                link.style("stroke", function(o) {
-                    return (isNumber(o.score) && o.score >= 0) ? color(o.score) : default_link_color
-                });
+                node.attr('class', 'node');
+                link.attr("class", "link");
             }
 
         }
@@ -217,16 +202,14 @@ d3.json(src, function(error, graph) {
         if (focus_node !== null) d = focus_node;
         highlight_node = d;
 
-        if (highlight_color != "white") {
-            circle.style(towhite, function(o) {
-                return isConnected(d, o) ? highlight_color : "white";
-            });
-            text.style("font-weight", function(o) {
-                return isConnected(d, o) ? "bold" : "normal";
-            });
-            link.style("stroke", function(o) {
-                return o.source.index == d.index || o.target.index == d.index ? highlight_color : ((isNumber(o.score) && o.score >= 0) ? color(o.score) : default_link_color);
 
+        node.attr('class', function(o){
+            return isConnected(d, o) ? 'node highlighted' : 'node'
+        });
+
+        if (highlight_color != "white") {
+            link.attr("class", function(o) {
+                return o.source.index == d.index || o.target.index == d.index ? "link highlighted" : "link"
             });
         }
     }

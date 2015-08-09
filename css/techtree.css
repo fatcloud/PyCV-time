@@ -20,8 +20,49 @@
   height: 80vh;
   position: absolute;
   top: 10vh;
-  right: 8vw;
+  right: -40vw;
   border-radius: 20px;
 
   background:  rgba(232,239,239, 0.655);
+}
+
+
+
+
+.node path {
+  fill: rgb(223,213,213);
+  stroke: white;
+}
+
+.highlighted path {
+  stroke: black;
+}
+
+.node path:hover {
+  fill: rgb(146,184,188);
+}
+
+.node path:active {
+  fill: red;
+}
+
+
+
+.node text {
+  stroke-width: 0;
+  font-weight: normal;
+}
+
+.highlighted text {
+  font-weight: bold;
+}
+
+
+
+.link {
+  stroke: #888;
+}
+
+.highlighted {
+  stroke: black;
 }
