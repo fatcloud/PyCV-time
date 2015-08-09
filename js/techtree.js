@@ -27,7 +27,7 @@ var force = d3.layout.force()
     .size([w, h]);
 
 //var default_node_color = "#ccc";
-var default_link_color = "#888";
+var default_link_color = "#ccc";
 var nominal_base_node_size = 8;
 var nominal_text_size = 10;
 var max_text_size = 24;
@@ -42,7 +42,7 @@ var svg = techtree.append("svg");
 var readme = techtree.append("div").attr("id", "readme")
 
 var zoom = d3.behavior.zoom().scaleExtent([min_zoom, max_zoom])
-var g = svg.append("g");
+var g = svg.append("g").attr("id", "drawing");
 svg.style("cursor", "move");
 
 src = document.getElementById("techtree").getAttribute("src")
@@ -105,6 +105,11 @@ d3.json(src, function(error, graph) {
         towhite = "fill"
     }
 
+
+    function node_size(d) {
+        return (d.size)*0.05 || nominal_base_node_size
+    }
+
     var circle = node.append("path")
         .attr("d", d3.svg.symbol()
             .size(function(d) {
@@ -120,7 +125,7 @@ d3.json(src, function(error, graph) {
             .style("font-size", nominal_text_size + "px")
             .text(function(d){ return d.id })
             .attr("dy", function(d){
-             return ((d.size)*0.05 || nominal_base_node_size) * 0.25 + "em"
+             return node_size(d) * 0.17 + "em"
             })
             ;
 
@@ -232,11 +237,6 @@ d3.json(src, function(error, graph) {
                 return d.type;
             }))
 
-        //circle.attr("r", function(d) { return (size(d.size)*base_radius/nominal_base_node_size||base_radius); })
-        if (!text_center) text.attr("dx", function(d) {
-            return (size(d.size) * base_radius / nominal_base_node_size || base_radius);
-        });
-
         var text_size = nominal_text_size;
         if (nominal_text_size * zoom.scale() > max_text_size) text_size = max_text_size / zoom.scale();
         text.style("font-size", text_size + "px");
@@ -287,6 +287,11 @@ d3.json(src, function(error, graph) {
         h = height;
     }
 
+    var init_scale = 0.2 * Math.sqrt( (w * h) / (drawing.getBBox().width * drawing.getBBox().height) );
+    var init_x = -(w/2) * (init_scale - 1), init_y = -(h/2) * (init_scale - 1)
+
+    zoom.translate([init_x, init_y]).scale(init_scale).event(g)
+    
 
 });
 
@@ -315,4 +320,5 @@ function vis_by_link_score(score) {
 function isNumber(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
 }
+
 
