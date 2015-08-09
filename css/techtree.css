@@ -38,6 +38,7 @@
   stroke: black;
 }
 
+
 .node path:hover {
   fill: rgb(146,184,188);
 }
@@ -47,15 +48,18 @@
 }
 
 
-
 .node text {
   stroke-width: 0;
   font-weight: normal;
 }
 
-.highlighted text {
+
+
+.node:hover>text {
   font-weight: bold;
 }
+
+
 
 
 
