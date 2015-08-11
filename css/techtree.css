@@ -35,7 +35,7 @@
 }
 
 .highlighted path {
-  stroke: black;
+  stroke: #2cd9cc;
 }
 
 
@@ -44,7 +44,7 @@
 }
 
 .node path:active {
-  fill: red;
+  fill: #d79494;
 }
 
 
@@ -68,5 +68,5 @@
 }
 
 .highlighted {
-  stroke: black;
+  stroke: #2cd9cc;
 }
