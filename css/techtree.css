@@ -47,6 +47,11 @@
   fill: #d79494;
 }
 
+.selected path{
+  fill: #d79494;
+}
+
+
 
 .node text {
   stroke-width: 0;

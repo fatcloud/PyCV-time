@@ -93,8 +93,7 @@ d3.json(src, function(error, graph) {
     });
 
     node.on("click", function(d){
-        // TODO
-        // show rendered readme.md
+        node[0][d.index].classList.toggle('selected')
     });
 
 
@@ -178,8 +177,8 @@ d3.json(src, function(error, graph) {
         if (focus_node === null) {
             svg.style("cursor", "move");
             if (highlight_color != "white") {
-                node.attr('class', 'node');
-                link.attr("class", "link");
+                node.classed('highlighted', false);
+                link.classed('highlighted', false);
             }
 
         }
@@ -207,14 +206,16 @@ d3.json(src, function(error, graph) {
         if (focus_node !== null) d = focus_node;
         highlight_node = d;
 
-
-        node.attr('class', function(o){
-            return isConnected(d, o) ? 'node highlighted' : 'node'
+        node.classed('highlighted', function(o){
+            return isConnected(d, o)
         });
+        // node.attr('class', function(o){
+        //     return isConnected(d, o) ? 'node highlighted' : 'node'
+        // });
 
         if (highlight_color != "white") {
-            link.attr("class", function(o) {
-                return o.source.index == d.index || o.target.index == d.index ? "link highlighted" : "link"
+            link.classed("highlighted", function(o) {
+                return o.source.index == d.index || o.target.index == d.index
             });
         }
     }
