@@ -7,8 +7,8 @@
     {"source": 3, "target": 4}],
   "nodes": [
     {"id": "HDR", "type": "circle"},
-    {"id": "OpenCV_Cam", "type": "circle"},
     {"id": "Background_Substraction", "type": "circle"},
+    {"id": "OpenCV_Cam", "type": "circle"},
     {"id": "webcam", "type": "circle"},
     {"id": "find_contour", "type": "circle"}],
   "directed": false,
