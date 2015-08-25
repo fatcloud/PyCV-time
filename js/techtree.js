@@ -15,7 +15,7 @@ var color = d3.scale.linear()
     .range(["lime", "yellow", "red"]);
 
 var highlight_color = "rgb(33,38,240)";
-var highlight_trans = 0.1;
+var highlight_trans = 0.3;
 
 var size = d3.scale.pow().exponent(1)
     .domain([1, 100])
@@ -92,9 +92,14 @@ d3.json(src, function(error, graph) {
         g.attr("transform", "translate(" + dcx + "," + dcy + ")scale(" + zoom.scale() + ")");
     });
 
-    node.on("click", function(d){
-        node[0][d.index].classList.toggle('selected')
-    });
+    // var sel_count = 0
+    // node.on("click", function(d){
+    //     node[0][d.index].classList.toggle('selected')
+
+    //     if ($('.selected').length == 1 ){
+    //         $('#readme').animate({right: '5vw'});
+    //     }
+    // });
 
 
     var tocolor = "fill";
@@ -149,12 +154,10 @@ d3.json(src, function(error, graph) {
             focus_node = d;
             set_focus(d)
             if (highlight_node === null) set_highlight(d)
-
         }).on("mouseout", function(d) {
             exit_highlight();
 
         });
-
 
 
     d3.select(window).on("mouseup",

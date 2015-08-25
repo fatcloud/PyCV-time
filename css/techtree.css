@@ -22,10 +22,8 @@
   top: 10vh;
   right: -40vw;
   border-radius: 20px;
-
   background:  rgba(232,239,239, 0.655);
 }
-
 
 
 
@@ -39,24 +37,32 @@
 }
 
 
-.node path:hover {
-  fill: rgb(146,184,188);
+/*.node path:hover {
+  stroke: rgb(146,184,188);
 }
-
+*/
 .node path:active {
-  fill: #d79494;
+  fill: #2cd9cc;
 }
 
 .selected path{
-  fill: #d79494;
+  fill: #2cd9cc;
 }
-
 
 
 .node text {
   stroke-width: 0;
   font-weight: normal;
 }
+
+
+.selected text{
+  font-weight: bold;
+}
+
+
+
+
 
 
 
