@@ -1,10 +1,15 @@
 import networkx as nx
+import matplotlib.pyplot as plt
 
 def findMST(simList):
 	g = createDistanceGraph(simList)
 	mst = nx.minimum_spanning_tree(g)
 	print mst.edges()
 	print mst.nodes()
+	nx.draw_networkx(mst, with_labels = True)
+
+
+	plt.show()
 
 
 def createDistanceGraph(simList):
