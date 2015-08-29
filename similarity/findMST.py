@@ -1,15 +1,20 @@
 import networkx as nx
-import matplotlib.pyplot as plt
+from networkx.readwrite import json_graph
 
-def findMST(simList):
+import matplotlib.pyplot as plt
+from analysis import makeCorpus, expSimilarity
+
+experiments_folder = "../temporily-in-a-mess/"
+
+
+def findMST(simList, plot=False):
 	g = createDistanceGraph(simList)
 	mst = nx.minimum_spanning_tree(g)
-	print mst.edges()
-	print mst.nodes()
-	nx.draw_networkx(mst, with_labels = True)
+	if plot:
+		nx.draw_networkx(mst, with_labels = True)
+		plt.show()
+	print json_graph.node_link_data(mst)
 
-
-	plt.show()
 
 
 def createDistanceGraph(simList):
@@ -19,12 +24,8 @@ def createDistanceGraph(simList):
 		G.add_edge(x1, x2, weight = distance)
 	return G
 
-
-if __name__ == "__main__":
-	import analysis
-	experiments_folder = "../experiments/"
-	corpus = analysis.makeCorpus(experiments_folder)
-
+def main():
+	corpus = makeCorpus(experiments_folder)
 	exps = corpus.keys()
 	N = len(corpus)
 
@@ -36,10 +37,13 @@ if __name__ == "__main__":
 		for next_ in range(idx+1, N):
 		  n1 = exps[idx]
 		  n2 = exps[next_]
-		  similarity = analysis.expSimilarity(corpus[n1], corpus[n2])
+		  similarity = expSimilarity(corpus[n1], corpus[n2])
 		  # [TODO] should be write into a file such as relation.json in future
 		  # print to stdout is now for testing only
 		  simList.append((similarity, n1, n2))
 		  print '%0.5f,%s,%s' % (similarity, n1, n2)
-
 	findMST(simList)
+
+if __name__ == "__main__":
+	main()
+	
