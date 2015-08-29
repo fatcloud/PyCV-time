@@ -4,13 +4,14 @@ from networkx.readwrite import json_graph
 import matplotlib.pyplot as plt
 from analysis import makeCorpus, expSimilarity
 
-experiments_folder = "../temporily-in-a-mess/"
+experiments_folder = "../experiments/"
 
 def findMST(simList, plot=False):
 	g = createDistanceGraph(simList)
 	mst = nx.minimum_spanning_tree(g.to_undirected())
-	
-	el = [e for e in g.edges() if e in mst.edges() or tuple(reversed(e)) in mst.edges()]
+	el = [(i, o, w) for (i, o, w) in g.edges_iter(data=True)  
+	                    if (i, o) in mst.edges() 
+	        			or (o, i) in mst.edges()]
 	g = nx.DiGraph()
 	g.add_edges_from(el)
 	if plot:
@@ -59,7 +60,7 @@ def main():
 		  dep = expDependency(corpus[n1], corpus[n2])
 		  simList.append((similarity, dep, n1, n2))
 		  # print '%0.5f,%s,%s' % (similarity, n1, n2)
-	findMST(simList, False)
+	findMST(simList, True)
 
 if __name__ == "__main__":
 	main()
