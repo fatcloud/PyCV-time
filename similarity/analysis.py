@@ -107,6 +107,15 @@ def expSimilarity(exp1, exp2):
       similarity += vector1[idx1] * vector2[idx2]
   return similarity
 
+def expDependency(exp1, exp2):
+  """ calculate the direction of dependence of 2 experiments """
+  words1, _ = exp1
+  words2, _ = exp2
+  l1 = len(words1)
+  l2 = len(words2)
+  l_intersect = len(set(words1).intersection(set(words2)))
+  return 0 if l_intersect / float(l1) >= l_intersect / float(l2) else 1
+
 if __name__ == '__main__':
   experiments_folder = '../experiments/'
   corpus = makeCorpus(experiments_folder)
@@ -124,4 +133,4 @@ if __name__ == '__main__':
       similarity = expSimilarity(corpus[n1], corpus[n2])
       # [TODO] should be write into a file such as relation.json in future
       # print to stdout is now for testing only
-      print '%0.5f,%s,%s' % (similarity, n1, n2)
+      print '%0.5f,%s,%s,%d' % (similarity, n1, n2)
