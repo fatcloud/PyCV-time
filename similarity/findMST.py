@@ -6,7 +6,6 @@ from analysis import makeCorpus, expSimilarity
 
 experiments_folder = "../temporily-in-a-mess/"
 
-
 def findMST(simList, plot=False):
 	g = createDistanceGraph(simList)
 	mst = nx.minimum_spanning_tree(g)
@@ -41,7 +40,7 @@ def main():
 		  # [TODO] should be write into a file such as relation.json in future
 		  # print to stdout is now for testing only
 		  simList.append((similarity, n1, n2))
-		  print '%0.5f,%s,%s' % (similarity, n1, n2)
+		  # print '%0.5f,%s,%s' % (similarity, n1, n2)
 	findMST(simList)
 
 if __name__ == "__main__":
