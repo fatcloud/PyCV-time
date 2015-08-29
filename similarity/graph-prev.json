@@ -1,0 +1,16 @@
+{
+  "graph": [],
+  "links": [
+    {"source": 1, "target": 2},
+    {"source": 0, "target": 2},
+    {"source": 2, "target": 4},
+    {"source": 3, "target": 4}],
+  "nodes": [
+    {"id": "HDR", "type": "circle", "exp_link":"https://github.com/fatcloud/PyCV-time/tree/master/experiments/circle"},
+    {"id": "Background_Substraction", "type": "circle", "exp_link":"https://github.com/fatcloud/PyCV-time/tree/master/experiments/Background_Substraction"},
+    {"id": "OpenCV_Cam", "type": "circle", "exp_link":"https://github.com/fatcloud/PyCV-time/tree/master/experiments/circle/OpenCV_Cam"},
+    {"id": "webcam", "type": "circle", "exp_link":"https://github.com/fatcloud/PyCV-time/tree/master/experiments/circle/webcam"},
+    {"id": "find_contour", "type": "circle", "exp_link":"https://github.com/fatcloud/PyCV-time/tree/master/experiments/circle/find_contour"}],
+  "directed": false,
+  "multigraph": false
+}

@@ -4,7 +4,7 @@ from networkx.readwrite import json_graph
 import matplotlib.pyplot as plt
 from analysis import makeCorpus, expSimilarity
 
-experiments_folder = "../temporily-in-a-mess/"
+experiments_folder = "../experiments/"
 
 def findMST(simList, plot=False):
 	g = createDistanceGraph(simList)
