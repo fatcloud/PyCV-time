@@ -27,7 +27,7 @@ var force = d3.layout.force()
     .size([w, h]);
 
 //var default_node_color = "#ccc";
-var default_link_color = "#ccc";
+var default_link_color = "#888";
 var nominal_base_node_size = 8;
 var nominal_text_size = 10;
 var max_text_size = 24;
@@ -42,8 +42,26 @@ var svg = techtree.append("svg");
 var readme = techtree.append("div").attr("id", "readme")
 
 var zoom = d3.behavior.zoom().scaleExtent([min_zoom, max_zoom])
+
+
 var g = svg.append("g").attr("id", "drawing");
+
+g.append("marker")
+    .attr("id","triangle")
+    .attr("viewBox","0 0 10 10")
+    .attr("refX", "10")
+    .attr("refY", "5")
+    .attr("markerUnits","strokeWidth")
+    .attr("markerWidth","12")
+    .attr("markerHeight","9")
+    .attr("orient","auto")
+    .attr("fill", default_link_color)
+    .append("path")
+    .attr("d", "M 0 0 L 10 5 L 0 10 z");
+
 svg.style("cursor", "move");
+
+
 
 src = document.getElementById("techtree").getAttribute("src")
 d3.json(src, function(error, graph) {
@@ -75,7 +93,8 @@ d3.json(src, function(error, graph) {
         .enter().append("line")
         .attr("class", "link")
         .style("stroke-width", nominal_stroke)
-
+        .attr("marker-end", "url(#triangle)")
+        .attr("stroke", default_link_color)
 
     var node = g.selectAll(".node")
         .data(graph.nodes)
@@ -260,18 +279,29 @@ d3.json(src, function(error, graph) {
             return "translate(" + d.x + "," + d.y + ")";
         });
 
-        link.attr("x1", function(d) {
-                return d.source.x;
-            })
-            .attr("y1", function(d) {
-                return d.source.y;
-            })
-            .attr("x2", function(d) {
-                return d.target.x;
-            })
-            .attr("y2", function(d) {
-                return d.target.y;
-            });
+        for(i = 0, links = force.links(); i < links.length; ++i ){
+            s = links[i].source
+            t = links[i].target
+
+            dx = t.x - s.x
+            dy = t.y - s.y
+
+            ll = Math.sqrt(dx*dx + dy*dy)
+
+            // unit vector from source to target!
+            ux = dx / ll
+            uy = dy / ll
+
+            // now compute the radius of a node
+            rs = node_size(s)
+            rt = node_size(t)
+
+            link[0][i].setAttribute("x1", ux*rs + s.x)
+            link[0][i].setAttribute("y1", uy*rs + s.y)
+
+            link[0][i].setAttribute("x2", -ux*rt + t.x)
+            link[0][i].setAttribute("y2", -uy*rt + t.y)
+        }
 
         node.attr("cx", function(d) {
                 return d.x;
@@ -280,6 +310,7 @@ d3.json(src, function(error, graph) {
                 return d.y;
             });
     });
+
 
     function resize() {
         var width = window.innerWidth,
