@@ -258,6 +258,8 @@ d3.json(src, function(error, graph) {
             var childString = '<div class="readme-body"></div><div class="readme-opts"></div>';
             el.append(childString);
             el.addClass('readme-parsed');
+
+            $(document.body).append('<div class="readme-alert-main"><div class="readme-alert-body"></div></div>');
         }
     }
 
@@ -268,7 +270,7 @@ d3.json(src, function(error, graph) {
         // https://github.com/fatcloud/PyCV-time/blob/master/experiments/{id}/readme.md
         var raw_content_base = "https://raw.githubusercontent.com/fatcloud/PyCV-time/master/experiments/"+ d.id;
         var readme_uri = "https://api.github.com/repos/fatcloud/PyCV-time/contents/experiments/"+ d.id +"/readme.md";
-        el.fadeIn('fast').animate({
+        el.fadeIn('slow').animate({
             'right': '2%'
             }, {duration: 'slow', queue: false}, function() {
             // Animation complete.
@@ -297,7 +299,26 @@ d3.json(src, function(error, graph) {
             },
             error: function(e){
                 if(e.responseJSON){
-                    alert(e.responseJSON.message);
+                    // alert(e.responseJSON.message);
+                    var readmeAlert = $(".readme-alert-body");
+                    var readmeAlertMain = readmeAlert.parent();
+                    readmeAlert.html("File 'readme.md' is not found.");
+                    readmeAlertMain.fadeIn('slow').animate({
+                        'top': 0
+                    }, {
+                        duration: 'slow',
+                        queue: false,
+                        complete: function() {
+                            // Animation complete.
+                            setTimeout((function(dom){
+                                return function(){
+                                    dom.fadeOut('fast').animate({ top: '-100%' },{
+                                        duration: 'slow', queue: false
+                                    });    
+                                };
+                            })(readmeAlertMain), 1800);
+                        }
+                    });
                 }else{
                     alert(e.responseText);
                 }
@@ -315,6 +336,7 @@ d3.json(src, function(error, graph) {
             }, {duration: 'slow', queue: false}, function() {
             // Animation complete.
         });
+        el.children(".readme-body").html("");
     }
 
 

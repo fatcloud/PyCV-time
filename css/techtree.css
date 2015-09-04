@@ -36,6 +36,26 @@
 .readme-opts{
   height: 10%;
 }
+.readme-alert-main{
+  width:25%;
+  min-width: 180px;
+  height: 40px;
+  /*opacity: 0;*/
+  top:-100%;
+  position: absolute;
+  left: 50%;
+}
+.readme-alert-body{
+  text-align: center;
+  position: relative;
+  height: 100%;
+  left: -50%;
+  padding: 6px;
+  font-size: 1.3em;
+  background:  rgba(60,60,60, 0.6);
+  color: rgb(239,239,239);
+  border-radius: 0px 0px 0.5em 0.5em;
+}
 
 
 .node path {
