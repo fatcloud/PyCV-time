@@ -16,15 +16,26 @@
 }
 
 #readme {
-  width: 35vw;
-  height: 80vh;
+  padding: 1.3%;
+  width: 35%;
+  height: 85%;
+  min-width: 350px;
+  min-height: 500px;
   position: absolute;
-  top: 10vh;
-  right: -40vw;
-  border-radius: 20px;
+  top: 5%;
+  /*right: 2%;*/
+  right: -100%;
+  border-radius: 1em;
+  display: none;
   background:  rgba(232,239,239, 0.655);
 }
-
+.readme-body{
+  height: 90%;
+  overflow: auto;
+}
+.readme-opts{
+  height: 10%;
+}
 
 
 .node path {

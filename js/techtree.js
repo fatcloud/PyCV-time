@@ -39,7 +39,7 @@ var max_zoom = 7;
 
 var techtree = d3.select("#techtree")
 var svg = techtree.append("svg");
-var readme = techtree.append("div").attr("id", "readme")
+var readme = techtree.append("div").attr("id", "readme");
 
 var zoom = d3.behavior.zoom().scaleExtent([min_zoom, max_zoom])
 
@@ -176,6 +176,11 @@ d3.json(src, function(error, graph) {
         }).on("mouseout", function(d) {
             exit_highlight();
 
+        }).on("click", function(d){
+            // To avoid node click after dragEnd event
+            if(d3.event.defaultPrevented) return;
+            // To do ajax request to get markdown text by specified id.
+            show_info(d);
         });
 
 
@@ -192,6 +197,11 @@ d3.json(src, function(error, graph) {
             }
 
             if (highlight_node === null) exit_highlight();
+        }).on("mousedown", function(){
+            if (highlight_node === null){
+                //alert("highlight_node is null");
+                hide_info();
+            };
         });
 
     function exit_highlight() {
@@ -240,6 +250,71 @@ d3.json(src, function(error, graph) {
                 return o.source.index == d.index || o.target.index == d.index
             });
         }
+    }
+
+    function gen_show_info(elementId){
+        var el = $(document.getElementById(elementId));
+        if(!el.hasClass('readme-parsed')){
+            var childString = '<div class="readme-body"></div><div class="readme-opts"></div>';
+            el.append(childString);
+            el.addClass('readme-parsed');
+        }
+    }
+
+    function show_info(d){
+        gen_show_info('readme');
+        var el = $(document.getElementById('readme'));
+
+        // https://github.com/fatcloud/PyCV-time/blob/master/experiments/{id}/readme.md
+        var raw_content_base = "https://raw.githubusercontent.com/fatcloud/PyCV-time/master/experiments/"+ d.id;
+        var readme_uri = "https://api.github.com/repos/fatcloud/PyCV-time/contents/experiments/"+ d.id +"/readme.md";
+        el.fadeIn('fast').animate({
+            'right': '2%'
+            }, {duration: 'slow', queue: false}, function() {
+            // Animation complete.
+        });
+        $.ajax({
+            url: readme_uri,
+            // dataType: 'jsonp',
+            // contentType: 'application/vnd.github.v3.raw',
+            headers: {
+                "Accept": 'application/vnd.github.v3.html; application/json'
+            },
+            success: function(results) {
+                //var content = results.data.content;
+                // console.log(results);
+
+                // str.replace(/blue|house|car/gi, function myFunction(x){return x.toUpperCase();});
+                var reg = new RegExp("(href|src)=\"(?!http|#)([^\"]+)\"","gi");
+
+                results = results.replace(reg, function(t){
+                    var sps = t.split('"');
+                    sps[1] = raw_content_base + "/" + sps[1]; 
+                    return sps.join('"');
+                });
+
+                el.children(".readme-body").html(results);
+            },
+            error: function(e){
+                if(e.responseJSON){
+                    alert(e.responseJSON.message);
+                }else{
+                    alert(e.responseText);
+                }
+                hide_info();
+            }
+        });
+        //el.children(".readme-body").html(marked('# Marked in browser\n\nRendered by **'+d.id+'**.'));
+    }
+
+    function hide_info(){
+        gen_show_info('readme');
+        var el = $(document.getElementById('readme'));
+        el.fadeOut('fast').animate({
+            'right': '-100%'
+            }, {duration: 'slow', queue: false}, function() {
+            // Animation complete.
+        });
     }
 
 
