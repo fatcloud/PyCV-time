@@ -1,16 +1,29 @@
 {
-  "graph": [],
-  "links": [
-    {"source": 1, "target": 2},
-    {"source": 0, "target": 2},
-    {"source": 2, "target": 4},
-    {"source": 3, "target": 4}],
-  "nodes": [
-    {"id": "HDR", "type": "circle", "exp_link":"https://github.com/fatcloud/PyCV-time/tree/master/experiments/circle"},
-    {"id": "Background_Substraction", "type": "circle", "exp_link":"https://github.com/fatcloud/PyCV-time/tree/master/experiments/Background_Substraction"},
-    {"id": "OpenCV_Cam", "type": "circle", "exp_link":"https://github.com/fatcloud/PyCV-time/tree/master/experiments/circle/OpenCV_Cam"},
-    {"id": "webcam", "type": "circle", "exp_link":"https://github.com/fatcloud/PyCV-time/tree/master/experiments/circle/webcam"},
-    {"id": "find_contour", "type": "circle", "exp_link":"https://github.com/fatcloud/PyCV-time/tree/master/experiments/circle/find_contour"}],
-  "directed": false,
-  "multigraph": false
+	"directed": true, 
+	"graph": {}, 
+	"nodes": [
+		{"id": "differential_screen_tracker"}, 
+		{"id": "webcam"}, 
+		{"id": "find_contours"}, 
+		{"id": "build-pyramid"}, 
+		{"id": "augmented_reality"}, 
+		{"id": "background_substraction"}, 
+		{"id": "camera_calibration"}, 
+		{"id": "mix_images"}, 
+		{"id": "HDR_Timelapse"}, 
+		{"id": "feature_matching"}, 
+		{"id": "screen_finder"}, 
+		{"id": "opencv_cam"}], 
+	"links": [{"source": 0, "target": 10}, 
+		{"source": 1, "target": 2}, 
+		{"source": 2, "target": 4}, 
+		{"source": 3, "target": 6}, 
+		{"source": 4, "target": 6}, 
+		{"source": 5, "target": 0}, 
+		{"source": 7, "target": 9}, 
+		{"source": 7, "target": 3}, 
+		{"source": 9, "target": 10}, 
+		{"source": 11, "target": 8}, 
+		{"source": 11, "target": 5}], 
+	"multigraph": false
 }
