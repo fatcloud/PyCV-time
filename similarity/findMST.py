@@ -1,4 +1,5 @@
 import networkx as nx
+import json
 from networkx.readwrite import json_graph
 
 import matplotlib.pyplot as plt
@@ -17,7 +18,7 @@ def findMST(simList, plot=False):
 	if plot:
 		nx.draw_networkx(g, with_labels = True)
 		plt.show()
-	print json_graph.node_link_data(g)
+	print json.dumps(json_graph.node_link_data(g))
 
 
 def createDistanceGraph(simList):
