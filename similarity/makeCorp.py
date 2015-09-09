@@ -5,25 +5,6 @@ from keyword import kwlist
 import os
 import re
 
-def catPythonScript(folder):
-  """
-  Args:
-    folder (String): the target folder
-
-  Returns:
-    cat (String): content of all *.py file under the target folder
-  """
-  cat = ''
-  for fn in [folder + '/' + d for d in os.listdir(folder)]:
-    content = None
-    if os.path.isdir(fn):
-      content = catPythonScript(fn)
-    if fn.endswith('.py'):
-      content = open(fn).read()
-    if content:
-      cat += content
-  return cat
-
 def makeCorpus(root_folder):
   """
   Args:
@@ -60,6 +41,25 @@ def makeCorpus(root_folder):
   calculateTFIDF(corpus)
   return corpus
 
+def catPythonScript(folder):
+  """
+  Args:
+    folder (String): the target folder
+
+  Returns:
+    cat (String): content of all *.py file under the target folder
+  """
+  cat = ''
+  for fn in [folder + '/' + d for d in os.listdir(folder)]:
+    content = None
+    if os.path.isdir(fn):
+      content = catPythonScript(fn)
+    if fn.endswith('.py'):
+      content = open(fn).read()
+    if content:
+      cat += content
+  return cat
+
 def calculateWordIDF(word, corpus):
   """
   Args:
@@ -93,35 +93,3 @@ def calculateTFIDF(corpus):
     for idx, word in enumerate(words):
       idf = calculateWordIDF(word, corpus)
       tfs[idx] *= idf
-
-def expSimilarity(exp1, exp2):
-  """ calculate the cosine similarity of 2 experiments """
-  words1, vector1 = exp1
-  words2, vector2 = exp2
-
-  similarity = 0.0
-  for idx1, word in enumerate(words1):
-    # if a word is in both exp1 and exp2, similarity increased by tfidf1 * tfidf2
-    if word in words2:
-      idx2 = words2.index(word)
-      similarity += vector1[idx1] * vector2[idx2]
-  return similarity
-
-if __name__ == '__main__':
-  experiments_folder = '../experiments/'
-  corpus = makeCorpus(experiments_folder)
-
-  exps = corpus.keys()
-  N = len(corpus)
-
-  for idx, exp in enumerate(exps):
-    if idx == N-1:
-      break
-    # calculate pair similarity
-    for next_ in range(idx+1, N):
-      n1 = exps[idx]
-      n2 = exps[next_]
-      similarity = expSimilarity(corpus[n1], corpus[n2])
-      # [TODO] should be write into a file such as relation.json in future
-      # print to stdout is now for testing only
-      print '%0.5f,%s,%s' % (similarity, n1, n2)
