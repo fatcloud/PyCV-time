@@ -9,4 +9,4 @@ TechTree 是一個用網狀圖把程式範例陳列出來的網站，
 ![image](https://cloud.githubusercontent.com/assets/7896433/9287922/4f81cb46-4361-11e5-88de-871d52999ddf.png)
 
 
-幕前仍處在非常早期的開發階段，功能規格在[這裡](https://techtree.hackpad.com/TechTree--y8IaiGMU5Hc)
+目前仍處在非常早期的開發階段，功能規格在[這裡](https://techtree.hackpad.com/TechTree--y8IaiGMU5Hc)
