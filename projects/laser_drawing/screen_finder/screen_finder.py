@@ -140,6 +140,9 @@ class ScreenFinder(object):
     def screen_top_view(self, cam_img):
         shape = (self._screen_img.shape[1], self._screen_img.shape[0])
         img = cv2.warpPerspective(cam_img, self.cam2screen_matrix, shape)
+
+
+        img = cv2.resize(img, (0,0), fx=0.5,fy=0.5)
         return img
 
 
