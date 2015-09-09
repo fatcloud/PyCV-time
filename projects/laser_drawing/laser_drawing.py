@@ -11,11 +11,21 @@ def draw_burning(canvas, location):
     return canvas
     
     
-def laser_location(img):
+def find_laser_loc(img, threshold):
     red_part = img[:,:,2]
-    ly, lx = np.unravel_index(red_part.argmax(), red_part.shape)
+    max_pos = red_part.argmax()
+    ly, lx = np.unravel_index(max_pos, red_part.shape)
+    if red_part[ly, lx] < threshold:
+        return None
     return np.array([lx, ly])
-    
+
+def find_threshold(cam):
+    img = cam.read()
+    hx, hy = find_laser_loc(img, 0)
+    threshold = img[hy, hx, 2] + 10
+    print "The red threshold is automatically determined to be", threshold
+    return threshold
+
 background = cv2.imread('wood.png')
 cv2.imshow('Burn this page!', background)
 
@@ -30,6 +40,9 @@ sf.find_screen_loop(cam, False)
 bs = background.shape
 canvas = np.full((bs[0], bs[1], 4), 0, dtype=np.uint8)
 
+# prepare threshold
+thresh = find_threshold(cam)
+
 show_top_view, show_cam_view = False, False
 while True:
     img = cam.read()
@@ -41,15 +54,17 @@ while True:
         top_view = sf.screen_top_view(img)
         cv2.imshow('Top view', top_view)
     
-    cam_laser = laser_location(img)
-    
-    lx, ly = tuple(sf.reverse_transform(cam_laser).reshape(-1))
-    background = draw_burning(background, (lx, ly))
+    cam_laser = find_laser_loc(img, thresh)
+    if cam_laser is not None:    
+        lx, ly = tuple(sf.reverse_transform(cam_laser).reshape(-1))
+        background = draw_burning(background, (lx, ly))
+
     cv2.imshow('Burn this page!', background)
     
     k = cv2.waitKey(10)
     if k == ord('a'):
         sf.find_screen_loop(cam, False)
+        thresh = find_threshold(cam)
     elif k == ord('s'):
         background = cv2.imread('wood.png')
     elif k == ord('d'):
