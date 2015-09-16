@@ -33,6 +33,7 @@ sf = ScreenFinder()
 sf.set_screen_img(background)
 
 cam = OpenCV_Cam()
+cam.size = 640, 480
 img = cam.read()
 sf.find_screen_img(img)
 sf.find_screen_loop(cam, False)

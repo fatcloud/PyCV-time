@@ -5,6 +5,7 @@ press 'f' to print measured frame rate (the frequency VideoCapture::read() is ca
 """
 
 import cv2
+
 from time import clock
 
 
@@ -26,7 +27,7 @@ class OpenCV_Cam(object):
 
     def start_cam(self, src=None):
         if src is not None:
-            self.cam = VideoCapture(src)
+            self.cam = cv2.VideoCapture(src)
             if not self.cam.isOpened():
                 raise ValueError('Cannot open ' + src + 'as VideoCapture')
             return
