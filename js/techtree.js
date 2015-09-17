@@ -43,6 +43,150 @@ var readme = techtree.append("div").attr("id", "readme");
 
 var zoom = d3.behavior.zoom().scaleExtent([min_zoom, max_zoom])
 
+var github_api_raw_path = "https://raw.githubusercontent.com/fatcloud/PyCV-time/";
+var github_api_content_path = "https://api.github.com/repos/fatcloud/PyCV-time/contents/";
+
+var not_found_content = "";
+var information_content = "";
+$.ajax({
+    url: github_api_content_path + 'readme/techtree.md?ref=gh-pages',
+    headers: {
+        "Accept": 'application/vnd.github.v3.html; application/json'
+    },
+    success: function(results) {
+        information_content = results;
+        show_info(information_content);
+    }
+});
+$.ajax({
+    url: github_api_content_path + 'readme/not-found.md?ref=gh-pages',
+    // https://api.github.com/repos/fatcloud/PyCV-time/contents/readme?ref=gh-pages
+    headers: {
+        "Accept": 'application/vnd.github.v3.html; application/json'
+    },
+    success: function(results) {
+        // var reg = new RegExp("(href|src)=\"(?!http|#)([^\"]+)\"","gi");
+        // results = results.replace(reg, function(t){
+        //     var sps = t.split('"');
+        //     sps[1] = raw_content_base + "/" + sps[1]; 
+        //     return sps.join('"');
+        // });
+        not_found_content = results;
+    }
+});
+
+var gen_show_info = function(elementId){
+    var el = $(document.getElementById(elementId));
+    if(!el.hasClass('readme-parsed')){
+        var childString = '<div class="readme-opts"></div><div class="readme-body"></div>'+
+            '<div class="readme-toggle"><div class="readme-toggle-offset"><span class="readme-toggle-text">\u25b6</span></div></div>';
+        el.append(childString);
+        el.addClass('readme-parsed');
+
+        $(document.body).append('<div class="readme-alert-main"><div class="readme-alert-body"></div></div>');
+        var target = el.find(".readme-toggle-offset");
+        el.find(".readme-toggle-offset").click(function(e){
+            if($(this).hasClass("open")){
+                hide_info();
+            }else{
+                show_info();
+            }
+        });
+    }
+};
+
+var show_info = function(d){
+    gen_show_info('readme');
+    var el = $(document.getElementById('readme'));
+
+    // https://github.com/fatcloud/PyCV-time/blob/master/experiments/{id}/readme.md
+    el.animate({
+        'right': 0
+    }, {
+        duration: 300,
+        queue: false,
+        complete: function() {
+            el.find(".readme-toggle-text").text("\u25b6");
+            el.find(".readme-toggle-offset").addClass("open");
+        }
+    });
+
+    if(typeof d == 'object'){
+        var raw_content_base = github_api_raw_path + "master/experiments/" + d.id;
+        var readme_uri = github_api_content_path + "experiments/" + d.id + "/readme.md";
+        el.children(".readme-body").html("");
+        $.ajax({
+            url: readme_uri,
+            // dataType: 'jsonp',
+            // contentType: 'application/vnd.github.v3.raw',
+            headers: {
+                "Accept": 'application/vnd.github.v3.html; application/json'
+            },
+            success: function(results) {
+                //var content = results.data.content;
+                // console.log(results);
+
+                // str.replace(/blue|house|car/gi, function myFunction(x){return x.toUpperCase();});
+                var reg = new RegExp("(href|src)=\"(?!http|#)([^\"]+)\"","gi");
+
+                results = results.replace(reg, function(t){
+                    var sps = t.split('"');
+                    sps[1] = raw_content_base + "/" + sps[1]; 
+                    return sps.join('"');
+                });
+
+                el.children(".readme-body").html(results);
+            },
+            error: function(e){
+                if(e.responseJSON){
+                    // alert(e.responseJSON.message);
+                    // var readmeAlert = $(".readme-alert-body");
+                    // var readmeAlertMain = readmeAlert.parent();
+                    // readmeAlert.html("File 'readme.md' is not found.");
+                    // readmeAlertMain.fadeIn('slow').animate({
+                    //     'top': 0
+                    // }, {
+                    //     duration: 'slow',
+                    //     queue: false,
+                    //     complete: function() {
+                    //         // Animation complete.
+                    //         setTimeout((function(dom){
+                    //             return function(){
+                    //                 dom.fadeOut('fast').animate({ top: '-100%' },{
+                    //                     duration: 'slow', queue: false
+                    //                 });    
+                    //             };
+                    //         })(readmeAlertMain), 1800);
+                    //     }
+                    // });
+                    show_info(not_found_content);
+                }else{
+                    alert(e.responseText);
+                }
+            }
+        });
+    }else if(typeof d == 'string'){
+        el.children(".readme-body").html(d);
+    }
+    //el.children(".readme-body").html(marked('# Marked in browser\n\nRendered by **'+d.id+'**.'));
+};
+
+var hide_info = function(){
+    gen_show_info('readme');
+    var el = $(document.getElementById('readme'));
+    el.animate({
+        'right': '-34%'
+    }, {
+        duration: 300,
+        queue: false,
+        complete: function() {
+            el.find(".readme-toggle-text").text("\u25c0");
+            el.find(".readme-toggle-offset").removeClass("open");
+        }
+    });
+    // el.children(".readme-body").html("");
+};
+
 
 var g = svg.append("g").attr("id", "drawing");
 
@@ -252,116 +396,6 @@ d3.json(src, function(error, graph) {
         }
     }
 
-    function gen_show_info(elementId){
-        var el = $(document.getElementById(elementId));
-        if(!el.hasClass('readme-parsed')){
-            var childString = '<div class="readme-opts"></div><div class="readme-body"></div>'+
-                '<div class="readme-toggle"><div class="readme-toggle-offset"><span class="readme-toggle-text">\u25b6</span></div></div>';
-            el.append(childString);
-            el.addClass('readme-parsed');
-
-            $(document.body).append('<div class="readme-alert-main"><div class="readme-alert-body"></div></div>');
-            var target = el.find(".readme-toggle-offset");
-            el.find(".readme-toggle-offset").click(function(e){
-                if($(this).hasClass("open")){
-                    hide_info();
-                }else{
-                    show_info();
-                }
-            });
-        }
-    }
-
-    function show_info(d){
-        gen_show_info('readme');
-        var el = $(document.getElementById('readme'));
-
-        // https://github.com/fatcloud/PyCV-time/blob/master/experiments/{id}/readme.md
-        el.animate({
-            'right': 0
-        }, {
-            duration: 300,
-            queue: false,
-            complete: function() {
-                el.find(".readme-toggle-text").text("\u25b6");
-                el.find(".readme-toggle-offset").addClass("open");
-            }
-        });
-
-        if(d){
-            var raw_content_base = "https://raw.githubusercontent.com/fatcloud/PyCV-time/master/experiments/"+ d.id;
-            var readme_uri = "https://api.github.com/repos/fatcloud/PyCV-time/contents/experiments/"+ d.id +"/readme.md";
-            el.children(".readme-body").html("");
-            $.ajax({
-                url: readme_uri,
-                // dataType: 'jsonp',
-                // contentType: 'application/vnd.github.v3.raw',
-                headers: {
-                    "Accept": 'application/vnd.github.v3.html; application/json'
-                },
-                success: function(results) {
-                    //var content = results.data.content;
-                    // console.log(results);
-
-                    // str.replace(/blue|house|car/gi, function myFunction(x){return x.toUpperCase();});
-                    var reg = new RegExp("(href|src)=\"(?!http|#)([^\"]+)\"","gi");
-
-                    results = results.replace(reg, function(t){
-                        var sps = t.split('"');
-                        sps[1] = raw_content_base + "/" + sps[1]; 
-                        return sps.join('"');
-                    });
-
-                    el.children(".readme-body").html(results);
-                },
-                error: function(e){
-                    if(e.responseJSON){
-                        // alert(e.responseJSON.message);
-                        var readmeAlert = $(".readme-alert-body");
-                        var readmeAlertMain = readmeAlert.parent();
-                        readmeAlert.html("File 'readme.md' is not found.");
-                        readmeAlertMain.fadeIn('slow').animate({
-                            'top': 0
-                        }, {
-                            duration: 'slow',
-                            queue: false,
-                            complete: function() {
-                                // Animation complete.
-                                setTimeout((function(dom){
-                                    return function(){
-                                        dom.fadeOut('fast').animate({ top: '-100%' },{
-                                            duration: 'slow', queue: false
-                                        });    
-                                    };
-                                })(readmeAlertMain), 1800);
-                            }
-                        });
-                    }else{
-                        alert(e.responseText);
-                    }
-                }
-            });
-        }
-        
-        //el.children(".readme-body").html(marked('# Marked in browser\n\nRendered by **'+d.id+'**.'));
-    }
-
-    function hide_info(){
-        gen_show_info('readme');
-        var el = $(document.getElementById('readme'));
-        el.animate({
-            'right': '-34%'
-        }, {
-            duration: 300,
-            queue: false,
-            complete: function() {
-                el.find(".readme-toggle-text").text("\u25c0");
-                el.find(".readme-toggle-offset").removeClass("open");
-            }
-        });
-        // el.children(".readme-body").html("");
-    }
-
 
     zoom.on("zoom", function() {
 
@@ -443,10 +477,9 @@ d3.json(src, function(error, graph) {
     }
 
     var init_scale = 0.2 * Math.sqrt( (w * h) / (drawing.getBBox().width * drawing.getBBox().height) );
-    var init_x = -(w/2) * (init_scale - 1), init_y = -(h/2) * (init_scale - 1)
+    var init_x = -(w/2) * (init_scale - 1), init_y = -(h/2) * (init_scale - 1);
 
-    zoom.translate([init_x, init_y]).scale(init_scale).event(g)
-    
+    zoom.translate([init_x, init_y]).scale(init_scale).event(g);
 
 });
 
