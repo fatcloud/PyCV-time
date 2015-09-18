@@ -37,7 +37,7 @@ var max_base_node_size = 36;
 var min_zoom = 0.1;
 var max_zoom = 7;
 
-var techtree = d3.select("#techtree")
+var techtree = d3.select("#techtree");
 var svg = techtree.append("svg");
 var readme = techtree.append("div").attr("id", "readme");
 
@@ -93,6 +93,11 @@ var gen_show_info = function(elementId){
             }
         });
     }
+};
+
+var is_info_hidden = function(){
+    gen_show_info('readme');
+    return !$(document.getElementById('readme')).find(".readme-toggle-offset").hasClass("open");
 };
 
 var show_info = function(d){
@@ -314,9 +319,9 @@ d3.json(src, function(error, graph) {
         })
         .on("mousedown", function(d) {
             d3.event.stopPropagation();
-            focus_node = d;
-            set_focus(d)
-            if (highlight_node === null) set_highlight(d)
+            //focus_node = d;
+            //set_focus(d);
+            //if (highlight_node === null) set_highlight(d);
         }).on("mouseout", function(d) {
             exit_highlight();
 
@@ -324,23 +329,36 @@ d3.json(src, function(error, graph) {
             // To avoid node click after dragEnd event
             if(d3.event.defaultPrevented) return;
             // To do ajax request to get markdown text by specified id.
-            show_info(d);
+            var show_another = focus_node != d;
+            if(is_info_hidden() && focus_node == d){
+                show_info(d);
+            }else{
+                lose_focus();
+                if(show_another){
+                    show_info(d);
+                    set_focus(d);
+                }else{
+                    hide_info();
+                }    
+            }
+            
+
         });
 
 
     d3.select(window).on("mouseup",
         function() {
-            if (focus_node !== null) {
-                focus_node = null;
-                if (highlight_trans < 1) {
+            // if (focus_node !== null) {
+            //     focus_node = null;
+            //     if (highlight_trans < 1) {
 
-                    circle.style("opacity", 1);
-                    text.style("opacity", 1);
-                    link.style("opacity", 1);
-                }
-            }
+            //         circle.style("opacity", 1);
+            //         text.style("opacity", 1);
+            //         link.style("opacity", 1);
+            //     }
+            // }
 
-            if (highlight_node === null) exit_highlight();
+            //if (highlight_node === null) exit_highlight();
         }).on("mousedown", function(){
             if (highlight_node === null){
                 //alert("highlight_node is null");
@@ -350,17 +368,31 @@ d3.json(src, function(error, graph) {
 
     function exit_highlight() {
         highlight_node = null;
-        if (focus_node === null) {
-            svg.style("cursor", "move");
-            if (highlight_color != "white") {
-                node.classed('highlighted', false);
-                link.classed('highlighted', false);
-            }
-
+        // if (focus_node === null) {
+        svg.style("cursor", "move");
+        if (highlight_color != "white") {
+            node.classed('highlighted', false);
+            link.classed('highlighted', false);
         }
+
+        // }
+    }
+
+    function lose_focus(){
+        if (focus_node !== null) {
+            focus_node = null;
+            if (highlight_trans < 1) {
+
+                circle.style("opacity", 1);
+                text.style("opacity", 1);
+                link.style("opacity", 1);
+            }
+        } 
+        //if (highlight_node === null) exit_highlight();
     }
 
     function set_focus(d) {
+        focus_node = d;
         if (highlight_trans < 1) {
             circle.style("opacity", function(o) {
                 return isConnected(d, o) ? 1 : highlight_trans;
@@ -379,7 +411,7 @@ d3.json(src, function(error, graph) {
 
     function set_highlight(d) {
         svg.style("cursor", "pointer");
-        if (focus_node !== null) d = focus_node;
+        //if (focus_node !== null) d = focus_node;
         highlight_node = d;
 
         node.classed('highlighted', function(o){
