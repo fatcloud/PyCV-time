@@ -331,7 +331,7 @@ d3.json(src, function(error, graph) {
             // To do ajax request to get markdown text by specified id.
             var show_another = focus_node != d;
             if(is_info_hidden() && focus_node == d){
-                show_info(d);
+                show_info();
             }else{
                 lose_focus();
                 if(show_another){
