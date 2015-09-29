@@ -41,7 +41,7 @@ class BuildTree(object):
 if __name__ == "__main__":
     from similarity_measures import cosine_similarity, jaccard_dependency
     from graphs import buildGraph
-    folder_name = "../experiments/"
+    folder_name = "../../../experiments/"
     b = BuildTree(cosine_similarity, jaccard_dependency, 
                   buildGraph, folder_name)
     print b.graph
