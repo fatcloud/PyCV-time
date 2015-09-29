@@ -1,4 +1,6 @@
 from makeCorp import makeCorpus
+from similarity_measures import cosine_similarity, jaccard_dependency
+from graphs import buildGraph
 
 
 class BuildTree(object):
@@ -37,11 +39,11 @@ class BuildTree(object):
     def graph(self):
 		return self._graph
 
-
-if __name__ == "__main__":
-    from similarity_measures import cosine_similarity, jaccard_dependency
-    from graphs import buildGraph
-    folder_name = "../../../experiments/"
+def main(folder_name):
+    #folder_name = "../../../experiments/"
     b = BuildTree(cosine_similarity, jaccard_dependency, 
                   buildGraph, folder_name)
-    print b.graph
+    print b.graph    
+
+if __name__ == "__main__":
+    main()
