@@ -2,17 +2,17 @@ import networkx as nx
 import json
 from networkx.readwrite import json_graph
 import matplotlib.pyplot as plt
-from makeCorp import makeCorpus
 
+#from makeCorp import makeCorpus
 
-def findMST(simList, plot=False):
+def findMST(simList, plot=True):
 	g = createDistanceGraph(simList)
-	mst = nx.minimum_spanning_tree(g.to_undirected())
-	el = [(i, o, w) for (i, o, w) in g.edges_iter(data=True)  
-	                    if (i, o) in mst.edges() 
-	        			or (o, i) in mst.edges()]
-	g = nx.DiGraph()
-	g.add_edges_from(el)
+	#mst = nx.minimum_spanning_tree(g.to_undirected())
+	#el = [(i, o, w) for (i, o, w) in g.edges_iter(data=True)  
+	#                    if (i, o) in mst.edges() 
+	#        			or (o, i) in mst.edges()]
+	#g = nx.DiGraph()
+	#g.add_edges_from(el)
 	if plot:
 		nx.draw_networkx(g, with_labels = True)
 		plt.show()

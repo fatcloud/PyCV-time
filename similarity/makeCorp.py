@@ -93,3 +93,4 @@ def calculateTFIDF(corpus):
     for idx, word in enumerate(words):
       idf = calculateWordIDF(word, corpus)
       tfs[idx] *= idf
+
