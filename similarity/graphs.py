@@ -5,12 +5,9 @@ import matplotlib.pyplot as plt
 
 #from makeCorp import makeCorpus
 
-def buildGraph(simList, plot=True):
+def buildGraph(simList, plot=False):
 	g = distanceGraph(simList)
-	threshold = 0.2 * g.size()
-	for i, a in enumerate(sorted(nx.to_edgelist(g), key=(lambda x: x[2]['weight']))):
-		if i > threshold:
-			g.remove_edge(a[0], a[1])
+	trim(g, 0.3)
 
 	#mst = nx.minimum_spanning_tree(g.to_undirected())
 	#el = [(i, o, w) for (i, o, w) in g.edges_iter(data=True)  
@@ -23,6 +20,12 @@ def buildGraph(simList, plot=True):
 		plt.show()
 	return json.dumps(json_graph.node_link_data(g))
 	
+def trim(graph, threshold=0.2):
+	thr = threshold * graph.size()
+	for i, a in enumerate(sorted(nx.to_edgelist(graph), key=(lambda x: x[2]['weight']))):
+		if i > thr:
+			graph.remove_edge(a[0], a[1])
+
 def distanceGraph(simList):
 	G = nx.DiGraph()
 	for sim, dep, x1, x2 in simList:
