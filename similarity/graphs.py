@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 def buildGraph(simList, plot=False):
 	g = distanceGraph(simList)
-	trim(g, 0.3)
+	trim(g, 0.1)
 
 	#mst = nx.minimum_spanning_tree(g.to_undirected())
 	#el = [(i, o, w) for (i, o, w) in g.edges_iter(data=True)  
