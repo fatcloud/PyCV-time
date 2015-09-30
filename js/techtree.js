@@ -1,8 +1,7 @@
 var w = window.innerWidth;
 var h = window.innerHeight;
 
-var focus_node = null,
-    highlight_node = null;
+var focus_node = null;
 
 var text_center = true;
 var outline = false;
@@ -14,7 +13,6 @@ var color = d3.scale.linear()
     .domain([min_score, (min_score + max_score) / 2, max_score])
     .range(["lime", "yellow", "red"]);
 
-var highlight_color = "rgb(33,38,240)";
 var highlight_trans = 0.3;
 
 var size = d3.scale.pow().exponent(1)
@@ -27,7 +25,6 @@ var force = d3.layout.force()
     .size([w, h]);
 
 //var default_node_color = "#ccc";
-var default_link_color = "#888";
 var nominal_base_node_size = 8;
 var nominal_text_size = 10;
 var max_text_size = 24;
@@ -196,6 +193,7 @@ var hide_info = function(){
 var g = svg.append("g").attr("id", "drawing");
 
 g.append("marker")
+    .attr("class", "normal_link")
     .attr("id","triangle")
     .attr("viewBox","0 0 10 10")
     .attr("refX", "10")
@@ -204,7 +202,22 @@ g.append("marker")
     .attr("markerWidth","20")
     .attr("markerHeight","15")
     .attr("orient","auto")
-    .attr("fill", default_link_color)
+    .attr("stroke-width", "0")
+    .append("path")
+    .attr("d", "M 0 0 L 10 5 L 0 10 z");
+
+
+g.append("marker")
+    .attr("class", "high_link")
+    .attr("id","triangle_highlighted")
+    .attr("viewBox","0 0 10 10")
+    .attr("refX", "10")
+    .attr("refY", "5")
+    .attr("markerUnits","strokeWidth")
+    .attr("markerWidth","20")
+    .attr("markerHeight","15")
+    .attr("orient","auto")
+    .attr("stroke-width", "0")
     .append("path")
     .attr("d", "M 0 0 L 10 5 L 0 10 z");
 
@@ -240,10 +253,9 @@ d3.json(src, function(error, graph) {
     var link = g.selectAll(".link")
         .data(graph.links)
         .enter().append("line")
-        .attr("class", "link")
+        .attr("class", "link normal_link")
         .style("stroke-width", nominal_stroke)
         .attr("marker-end", "url(#triangle)")
-        .attr("stroke", default_link_color)
 
     var node = g.selectAll(".node")
         .data(graph.nodes)
@@ -259,15 +271,6 @@ d3.json(src, function(error, graph) {
         zoom.translate([dcx, dcy]);
         g.attr("transform", "translate(" + dcx + "," + dcy + ")scale(" + zoom.scale() + ")");
     });
-
-    // var sel_count = 0
-    // node.on("click", function(d){
-    //     node[0][d.index].classList.toggle('selected')
-
-    //     if ($('.selected').length == 1 ){
-    //         $('#readme').animate({right: '5vw'});
-    //     }
-    // });
 
 
     var tocolor = "fill";
@@ -321,7 +324,6 @@ d3.json(src, function(error, graph) {
             d3.event.stopPropagation();
             //focus_node = d;
             //set_focus(d);
-            //if (highlight_node === null) set_highlight(d);
         }).on("mouseout", function(d) {
             exit_highlight();
 
@@ -346,41 +348,17 @@ d3.json(src, function(error, graph) {
         });
 
 
-    d3.select(window).on("mouseup",
-        function() {
-            // if (focus_node !== null) {
-            //     focus_node = null;
-            //     if (highlight_trans < 1) {
-
-            //         circle.style("opacity", 1);
-            //         text.style("opacity", 1);
-            //         link.style("opacity", 1);
-            //     }
-            // }
-
-            //if (highlight_node === null) exit_highlight();
-        }).on("mousedown", function(){
-            if (highlight_node === null){
-                //alert("highlight_node is null");
-                // hide_info();
-            };
-        });
-
     function exit_highlight() {
-        highlight_node = null;
-        // if (focus_node === null) {
         svg.style("cursor", "move");
-        if (highlight_color != "white") {
-            node.classed('highlighted', false);
-            link.classed('highlighted', false);
-        }
-
-        // }
+        node.classed('highlighted', false);
+        link.classed('high_link', false);
+        link.style("marker-end", "url(#triangle)")
     }
 
     function lose_focus(){
         if (focus_node !== null) {
             focus_node = null;
+            node.classed('focused', false);
             if (highlight_trans < 1) {
 
                 circle.style("opacity", 1);
@@ -388,11 +366,14 @@ d3.json(src, function(error, graph) {
                 link.style("opacity", 1);
             }
         } 
-        //if (highlight_node === null) exit_highlight();
     }
 
     function set_focus(d) {
         focus_node = d;
+        node.classed('focused', function(o){
+            return o === d
+        });
+
         if (highlight_trans < 1) {
             circle.style("opacity", function(o) {
                 return isConnected(d, o) ? 1 : highlight_trans;
@@ -412,20 +393,19 @@ d3.json(src, function(error, graph) {
     function set_highlight(d) {
         svg.style("cursor", "pointer");
         //if (focus_node !== null) d = focus_node;
-        highlight_node = d;
 
         node.classed('highlighted', function(o){
             return isConnected(d, o)
         });
-        // node.attr('class', function(o){
-        //     return isConnected(d, o) ? 'node highlighted' : 'node'
-        // });
+        
+        link.style("marker-end", function(o) {
+            return o.source.index == d.index || o.target.index == d.index ? "url(#triangle_highlighted)" : "url(#triangle)";
+        });
 
-        if (highlight_color != "white") {
-            link.classed("highlighted", function(o) {
-                return o.source.index == d.index || o.target.index == d.index
-            });
-        }
+        link.classed("high_link", function(o) {
+            return o.source.index == d.index || o.target.index == d.index
+        });
+        
     }
 
 

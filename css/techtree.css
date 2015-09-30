@@ -27,7 +27,7 @@
   right: -34%;
   border-radius: 0.5em 0 0 0.5em;
   /*display: none;*/
-  background:  rgba(232,239,239, 0.655);
+  background:  rgba(211,237,250, 0.5);
 }
 .readme-body{
   height: 94%;
@@ -92,40 +92,29 @@
 }
 
 
+/* about Node */
+
 .node path {
   fill: rgb(223,213,213);
   stroke: white;
 }
 
 .highlighted path {
-  stroke: #2cd9cc;
+  stroke: #79caef;
 }
 
-
-/*.node path:hover {
-  stroke: rgb(146,184,188);
+.focused path{
+  fill: #79caef;
 }
-*/
+
 .node path:active {
-  fill: #2cd9cc;
+  fill: #79caef;
 }
-
-.selected path{
-  fill: #2cd9cc;
-}
-
 
 .node text {
   stroke-width: 0;
   font-weight: normal;
 }
-
-
-.selected text{
-  font-weight: bold;
-}
-
-
 
 .node:hover>text {
   font-weight: bold;
@@ -133,10 +122,16 @@
 
 
 
-.link {
+/* about link */
+
+.normal_link {
   stroke: #888;
+  fill:   #888;
 }
 
-.highlighted {
-  stroke: #2cd9cc;
+.high_link {
+  stroke: #79caef;
+  fill:   #79caef;
 }
+
+
