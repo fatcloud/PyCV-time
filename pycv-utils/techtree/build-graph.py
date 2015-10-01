@@ -1,6 +1,7 @@
 from os import listdir
 from os.path import isdir
 import importlib
+import json
 import sys
 
 dirname = "../../experiments/"
@@ -11,5 +12,6 @@ for algorithm in listdir('algorithms'):
 		b = m.main(dirname)
 		with open("graphs/" + algorithm + ".json", 'w') as f:
 			f.write(b.graph)
-#for algo in "./algorithms":
-#	exec algo > ( "./graphs/" + algo + ".json" )
+
+with open("algorithms.json", 'w') as f:
+	f.write( json.dumps([i for i in listdir('algorithms') if isdir("algorithms/" + i)] ))
