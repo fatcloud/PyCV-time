@@ -6,6 +6,15 @@
   left: 0px;
 }
 
+#contributors {
+  color: #aaa;  
+}
+
+#contributors a {
+  color: #aaa;  
+}
+
+
 .search-bar {
   position: absolute;
   width: 400px;
