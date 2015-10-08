@@ -342,7 +342,8 @@ d3.json(src, function(error, graph) {
                 lose_focus();
                 if(show_another){
                     show_info(d);
-                    set_focus.call(this, d);
+                    set_focus(d);
+                    // set_focus.call(this, d);
                 }else{
                     hide_info();
                 }    
@@ -374,7 +375,11 @@ d3.json(src, function(error, graph) {
 
     function set_focus(d) {
         focus_node = d;
-        d3.select(this).classed('focused');
+        node.classed('focused', function(o){
+            return o === d
+        });
+
+        //d3.select(this).classed('focused');
 
         if (highlight_trans < 1) {
             circle.style("opacity", function(o) {
