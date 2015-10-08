@@ -40,6 +40,8 @@ var readme = techtree.append("div").attr("id", "readme");
 
 var zoom = d3.behavior.zoom().scaleExtent([min_zoom, max_zoom])
 
+
+
 var github_api_raw_path = "https://raw.githubusercontent.com/fatcloud/PyCV-time/";
 var github_api_content_path = "https://api.github.com/repos/fatcloud/PyCV-time/contents/";
 
@@ -176,8 +178,9 @@ var show_info = function(d){
 var hide_info = function(){
     gen_show_info('readme');
     var el = $(document.getElementById('readme'));
+    var percent = (($('#readme').outerWidth() - $('.readme-toggle').width()) / $(window).width() * 100).toFixed(0);
     el.animate({
-        'right': '-34%'
+        'right': '-' + percent + '%'
     }, {
         duration: 300,
         queue: false,
@@ -226,6 +229,7 @@ svg.style("cursor", "move");
 
 
 src = document.getElementById("techtree").getAttribute("src")
+
 d3.json(src, function(error, graph) {
 
     var linkedByIndex = {};
@@ -338,7 +342,7 @@ d3.json(src, function(error, graph) {
                 lose_focus();
                 if(show_another){
                     show_info(d);
-                    set_focus(d);
+                    set_focus.call(this, d);
                 }else{
                     hide_info();
                 }    
@@ -370,9 +374,7 @@ d3.json(src, function(error, graph) {
 
     function set_focus(d) {
         focus_node = d;
-        node.classed('focused', function(o){
-            return o === d
-        });
+        d3.select(this).classed('focused');
 
         if (highlight_trans < 1) {
             circle.style("opacity", function(o) {
