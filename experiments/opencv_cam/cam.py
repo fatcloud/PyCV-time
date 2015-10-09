@@ -11,6 +11,7 @@ from time import clock
 class OpenCV_Cam(object):
 
     def __init__(self, src=None):
+        self.pic_idx = 0
         self.start_cam(src)
         self.__fcount, self.__frate, self.__start = 0, 0, clock()
     
@@ -111,6 +112,10 @@ class OpenCV_Cam(object):
                         
             elif k == ord('f'):
                 print self.frame_rate
+
+            elif k == ord(' '):
+                cv2.imwrite("p" + str(self.pic_idx) + ".png", output)
+                self.pic_idx += 1
     
     # __enter__ + __exit__ = with MyCam as cam:
     # this ensures that the camera will be released
