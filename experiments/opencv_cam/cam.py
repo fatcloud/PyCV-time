@@ -5,8 +5,9 @@ press 'f' to print measured frame rate (the frequency VideoCapture::read() is ca
 """
 
 import cv2
+import os
 from time import clock
-
+from datetime import datetime as dt
 
 class OpenCV_Cam(object):
 
@@ -114,7 +115,16 @@ class OpenCV_Cam(object):
                 print self.frame_rate
 
             elif k == ord(' '):
-                filename = "./pics/p" + str(self.pic_idx) + ".png"
+                
+                directory = "./pictures"
+
+                f = str(dt.now())
+                idx = ''.join([c for c in f if c.isdigit() or c.isalpha() or c in '-_.'])
+                filename = directory + '/' + idx + ".png"
+                
+                if not os.path.exists(directory):
+                    os.makedirs(directory)
+                
                 cv2.imwrite(filename, output)
                 print "image saved to " + filename
                 self.pic_idx += 1
