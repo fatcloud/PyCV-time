@@ -114,7 +114,9 @@ class OpenCV_Cam(object):
                 print self.frame_rate
 
             elif k == ord(' '):
-                cv2.imwrite("p" + str(self.pic_idx) + ".png", output)
+                filename = "./pics/p" + str(self.pic_idx) + ".png"
+                cv2.imwrite(filename, output)
+                print "image saved to " + filename
                 self.pic_idx += 1
     
     # __enter__ + __exit__ = with MyCam as cam:
@@ -131,7 +133,7 @@ class OpenCV_Cam(object):
 if __name__ == '__main__':
     print __doc__
     cam = OpenCV_Cam()
-    cam.size = (800, 600)
+    cam.size = (640, 480)
 
     info = cam.info
     for i in info:
