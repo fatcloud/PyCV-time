@@ -4,9 +4,9 @@ import numpy as np
 
 class undistortor:
 
-	def __init__(self, cal_data = 'c525.npz'):
-		self.cal_data = 'c525.npz'
-		with np.load('c525.npz') as X:
+	def __init__(self, cal_data = 'c525_laptop.npz'):
+		self.cal_data = cal_data
+		with np.load(self.cal_data) as X:
 		    self.mtx, self.dist, _, _ = [X[i] for i in ('mtx','dist','rvecs','tvecs')]
 	
 	def apply(self, img, crop = True):
@@ -27,7 +27,7 @@ class undistortor:
 
 if __name__ == "__main__":
 
-	ud = undistortor('c525.npz')
+	ud = undistortor('c525_laptop.npz')
 	img = cv2.imread('img.jpg')
 
 	cv2.imshow('compare',np.hstack([img, ud.apply(img, crop=False)]))
