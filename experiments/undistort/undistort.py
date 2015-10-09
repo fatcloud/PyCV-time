@@ -1,11 +1,18 @@
 import cv2
 import numpy as np
+from glob import glob
+
 
 
 class undistortor:
 
-	def __init__(self, cal_data = 'c525_laptop.npz'):
-		self.cal_data = cal_data
+	def __init__(self, cal_data = None):
+		if cal_data is None:
+			npz_mask = '*.npz'
+			self.cal_data = glob(npz_mask)[0]
+		else:
+			self.cal_data = cal_data
+
 		with np.load(self.cal_data) as X:
 		    self.mtx, self.dist, _, _ = [X[i] for i in ('mtx','dist','rvecs','tvecs')]
 	
@@ -27,7 +34,7 @@ class undistortor:
 
 if __name__ == "__main__":
 
-	ud = undistortor('c525_laptop.npz')
+	ud = undistortor()
 	img = cv2.imread('img.jpg')
 
 	cv2.imshow('compare',np.hstack([img, ud.apply(img, crop=False)]))
