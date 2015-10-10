@@ -34,9 +34,9 @@
   top: 0;
   /*right: 2%;*/
   right: -34%;
-  border-radius: 0.5em 0 0 0.5em;
+  border-radius: 0 0 0 0; /*0.5em;*/
   /*display: none;*/
-  background:  rgba(211,237,250, 0.5);
+  background: rgba(218, 241, 251, 0.9);
 }
 .readme-body{
   height: 94%;
@@ -60,7 +60,7 @@
   height: 100%;
   top:-50%;
   vertical-align: middle;
-  box-shadow: 1px 1px 2px 1px rgba(128,128,128, 0.6);
+  /*box-shadow: 1px 1px 2px 1px rgba(128,128,128, 0.6);*/
   background: rgba(190,190,190, 0.6);
   color: rgb(239,239,239);
   border-radius: 0px 0.3em 0.3em 0px;

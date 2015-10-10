@@ -77,8 +77,9 @@ $.ajax({
 var gen_show_info = function(elementId){
     var el = $(document.getElementById(elementId));
     if(!el.hasClass('readme-parsed')){
-        var childString = '<div class="readme-opts"></div><div class="readme-body"></div>'+
-            '<div class="readme-toggle"><div class="readme-toggle-offset"><span class="readme-toggle-text">\u25b6</span></div></div>';
+        var childString='<div class="readme-opts"></div>' + 
+                        '<div class="readme-body"></div>' +
+                        '<div class="readme-toggle"><div class="readme-toggle-offset"><span class="readme-toggle-text">\u25b6</span></div></div>';
         el.append(childString);
         el.addClass('readme-parsed');
 
