@@ -38,15 +38,14 @@ var techtree = d3.select("#techtree");
 var svg = techtree.append("svg");
 var readme = techtree.append("div").attr("id", "readme");
 
-var zoom = d3.behavior.zoom().scaleExtent([min_zoom, max_zoom])
-
-
+var zoom = d3.behavior.zoom().scaleExtent([min_zoom, max_zoom]);
 
 var github_api_raw_path = "https://raw.githubusercontent.com/fatcloud/PyCV-time/";
 var github_api_content_path = "https://api.github.com/repos/fatcloud/PyCV-time/contents/";
 
 var not_found_content = "";
 var information_content = "";
+var filetrees = [];
 $.ajax({
     url: github_api_content_path + 'readme/techtree.md?ref=gh-pages',
     headers: {
@@ -54,7 +53,7 @@ $.ajax({
     },
     success: function(results) {
         information_content = results;
-        show_info(information_content);
+        show_info(information_content, false);
     }
 });
 $.ajax({
@@ -73,11 +72,91 @@ $.ajax({
         not_found_content = results;
     }
 });
+$.ajax({
+    url: "https://api.github.com/repos/fatcloud/PyCV-time/git/trees/master?recursive=1",
+    success: function(results) {
+        if(results.truncated === true){
+            console.warn("The tree list is not include all objects.");
+        }
+        // var reg = new RegExp("^experiments/HDR_Timelapse","g");
+        for(var i = 0, len = results.tree.length; i < len; i++){
+            var reg = new RegExp("^experiments","g");
+            var o = results.tree[i];
+            var matchResult = reg.test(o.path);
+            // console.log("path: "+ o.path + "  results:"+matchResult);
+            if(matchResult && o.type != "tree"){
+                filetrees.push(o);
+            }
+        }
+    }
+});
+
+var fileResults = null;
+var zipOutputName = null;
+var getZipFile = function(url){
+    fileResults = [];
+    if(filetrees.length > 0){
+        // $("#loading").show();
+        var loadingJQ = $("#loading");
+        var loadingTextJQ = $("#loading .loading-text");
+        var dirs = url.split('/');
+        zipOutputName = dirs.pop();
+        // var filterPath = dirs.join('/');
+        loadingJQ.show();
+        var requestCount = 0;
+        for(var i = 0, len = filetrees.length; i < len; i++){
+            var reg = new RegExp("^" + url + "/(.*)");    
+            var item = filetrees[i];
+            var zipPath = item.path.match(reg);
+            if(zipPath && zipPath.length > 0){
+                setTimeout((function(o, p){
+                    return function(){
+                        loadingTextJQ.text("Fetch " + p);
+                        $.ajax({
+                            url: o.url,
+                            success: function(results) {
+                                fileResults.push({
+                                    path: p,
+                                    content: results.content
+                                });
+                            }
+                        });
+                    };
+                })(item, zipPath[1]), requestCount++ * 80);
+            }
+        }
+    }
+};
+
+$(document).ajaxStart(function(){
+    // $("#loading").show();
+}).ajaxStop(function(){
+            // alert('done');
+    
+    if(fileResults && zipOutputName){
+        var loadingJQ = $("#loading");
+        var loadingTextJQ = $("#loading .loading-text");
+        loadingTextJQ.text("Zipping and trigger download");
+        var zip = new JSZip();
+        for(var i = 0, len = fileResults.length; i < len; i++){
+            var item = fileResults[i];
+            zip.file(item.path, item.content, {createFolders:true,base64:true});
+            // var img = zip.folder("images");
+            // img.file("smile.gif", imgData, {base64: true});
+            
+        }
+        saveAs(zip.generate({type:"blob"}), zipOutputName + ".zip");
+        fileResults = null;
+        zipOutputName = null;
+        loadingJQ.hide();
+        loadingTextJQ.text("Loading...");
+    }
+});
 
 var gen_show_info = function(elementId){
     var el = $(document.getElementById(elementId));
     if(!el.hasClass('readme-parsed')){
-        var childString='<div class="readme-opts"></div>' + 
+        var childString='<div class="readme-opts"><button>Download</button></div>' + 
                         '<div class="readme-body"></div>' +
                         '<div class="readme-toggle"><div class="readme-toggle-offset"><span class="readme-toggle-text">\u25b6</span></div></div>';
         el.append(childString);
@@ -92,6 +171,10 @@ var gen_show_info = function(elementId){
                 show_info();
             }
         });
+        el.find(".readme-opts button").click(function(e){
+            var url = el.attr("gitzip-url");
+            getZipFile(url);
+        });
     }
 };
 
@@ -100,7 +183,7 @@ var is_info_hidden = function(){
     return !$(document.getElementById('readme')).find(".readme-toggle-offset").hasClass("open");
 };
 
-var show_info = function(d){
+var show_info = function(d, canDownload){
     gen_show_info('readme');
     var el = $(document.getElementById('readme'));
 
@@ -120,6 +203,8 @@ var show_info = function(d){
         var raw_content_base = github_api_raw_path + "master/experiments/" + d.id;
         var readme_uri = github_api_content_path + "experiments/" + d.id + "/readme.md";
         el.children(".readme-body").html("");
+        el.attr("gitzip-url", "experiments/" + d.id);
+        el.find("button").show();
         $.ajax({
             url: readme_uri,
             // dataType: 'jsonp',
@@ -172,6 +257,9 @@ var show_info = function(d){
         });
     }else if(typeof d == 'string'){
         el.children(".readme-body").html(d);
+    }
+    if(canDownload === false){
+        el.find("button").hide();
     }
     //el.children(".readme-body").html(marked('# Marked in browser\n\nRendered by **'+d.id+'**.'));
 };
