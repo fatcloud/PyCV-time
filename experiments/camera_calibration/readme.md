@@ -8,9 +8,9 @@ A= <br>
 |0 fy Cy|<br>
 |0  0  1|<br>
 fx,fy為攝影機的焦距
-Cx,Cy為影像的中心的偏差
+Cx,Cy為影像的中心的偏差<br>
 
-主要是利用影像中棋盤格的角點位置比較來達成我們要的攝影機內部校正
-核心函數
-cv2.findChessboardCorners 找出棋盤格的角點
-cv2.calibrateCamera  校正相機內部參數
+主要是利用影像中棋盤格的角點位置比較來達成我們要的攝影機內部校正<br>
+核心函數<br>
+cv2.findChessboardCorners 找出棋盤格的角點<br>
+cv2.calibrateCamera  校正相機內部參數<br>
