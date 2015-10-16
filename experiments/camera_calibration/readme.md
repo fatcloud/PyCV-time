@@ -2,10 +2,11 @@
 使用python利用棋盤格來校正攝影機的像差
 
 中心概念
-利用兩張圖片中棋盤格不同的旋轉角度及位置平移來計算matrix of intrinsic parameters
-  |fx 0 Cx|
-A=|0 fy Cy|
-  |0  0  1|
+利用兩張圖片中棋盤格不同的旋轉角度及位置平移來計算matrix of intrinsic parameters <br>
+A= <br>
+|fx 0 Cx|<br>
+|0 fy Cy|<br>
+|0  0  1|<br>
 fx,fy為攝影機的焦距
 Cx,Cy為影像的中心的偏差
 
