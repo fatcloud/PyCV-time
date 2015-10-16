@@ -6,7 +6,7 @@
 以下命令都可以直接執行：
 
 	python realtime_ORB.py
-	python realtime_ORB.py
+	python realtime_SIFT.py
 
 兩個命令都是開啟相機去找和預設圖片 matching 的影像，
 差別只在於一個用 ORB 演算法，
