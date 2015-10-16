@@ -9,7 +9,8 @@ Background subtraction (背景相減)，簡單說是下一個frame減掉現在�
 <center><img src="http://docs.opencv.org/master/Background_Subtraction_Tutorial_Scheme.png"></img></center>
 
 ### 用法:
-python motion_detect.py
+- python motion_detect.py
+
 
 ### 結果
 物件沒有移動:全黑
@@ -21,9 +22,9 @@ python motion_detect.py
 
 #### Background modeling 會考慮到下面兩點:
 
--- 背景初始化
+- 背景初始化
 
--- 背景更新 
+- 背景更新 
 
 
 
