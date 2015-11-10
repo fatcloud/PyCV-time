@@ -49,4 +49,4 @@ def gray_filter(frame_in):
     
     
 if __name__ == "__main__":
-    webcam_gui(gray_filter, video_src=1)
+    webcam_gui(gray_filter, video_src=0)
