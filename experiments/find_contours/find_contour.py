@@ -22,7 +22,7 @@ def imgproc(frame):
     
     # do various tests and modification
     contours = [ctr for ctr in contours if cv2.contourArea(ctr) > 100]
-    contours = [cv2.approxPolyDP(ctr, 30 , True) for ctr in contours]
+    contours = [cv2.approxPolyDP(ctr, 5 , True) for ctr in contours]
     contours = [ctr for ctr in contours if cv2.isContourConvex(ctr)]
     
     # draw on the frame
