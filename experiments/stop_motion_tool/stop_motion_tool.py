@@ -8,6 +8,9 @@ KEY_SPACE = ord(' ')
 prevFrame = None
 i = 0 
 
+fourcc = cv2.cv.CV_FOURCC(*'XVID')
+video = cv2.VideoWriter('output.avi',fourcc, 3.0, (1920,1080), isColor =True)
+
 while True:
     # Capture frame-by-frame
     frame = cam.read()
@@ -28,9 +31,11 @@ while True:
 	
     if key_code is KEY_SPACE:
         cv2.imwrite('frame'+str(i)+'.png', frame)
+        video.write(frame)
         prevFrame = frame
         i += 1
     elif key_code is KEY_ESC:
         break
-	
+cv2.destroyAllWindows()	
 cam.release()
+video.release()
