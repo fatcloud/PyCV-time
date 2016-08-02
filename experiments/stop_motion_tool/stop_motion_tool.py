@@ -1,6 +1,7 @@
 from cam import OpenCV_Cam
 import cv2
-cam = OpenCV_Cam()
+
+cam = OpenCV_Cam(0)
 cam.size = (1920, 1080)
 
 KEY_ESC = 27
@@ -10,6 +11,7 @@ i = 0
 
 fourcc = cv2.cv.CV_FOURCC(*'XVID')
 video = cv2.VideoWriter('output.avi',fourcc, 3.0, (1920,1080), isColor =True)
+
 
 while True:
     # Capture frame-by-frame
@@ -24,7 +26,8 @@ while True:
     else:
         showFrame = frame
     
-    cv2.imshow('Press ESC to exit', showFrame)
+    resizeShowFrame = cv2.resize(showFrame, (0,0), fx = 0.5, fy = 0.5 )
+    cv2.imshow('Press ESC to exit', resizeShowFrame)
     
     # wait for the key
     key_code = cv2.waitKey(10)
