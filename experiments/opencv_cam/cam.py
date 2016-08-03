@@ -28,7 +28,7 @@ class OpenCV_Cam(object):
 
     def start_cam(self, src=None):
         if src is not None:
-            self.cam = VideoCapture(src)
+            self.cam = cv2.VideoCapture(src)
             if not self.cam.isOpened():
                 raise ValueError('Cannot open ' + src + 'as VideoCapture')
             return
@@ -143,7 +143,7 @@ class OpenCV_Cam(object):
 if __name__ == '__main__':
     print __doc__
     cam = OpenCV_Cam()
-    cam.size = (1280, 720)
+    cam.size = (640, 480)
 
     info = cam.info
     for i in info:
