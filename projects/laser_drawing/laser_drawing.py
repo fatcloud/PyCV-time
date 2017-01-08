@@ -26,7 +26,8 @@ def find_threshold(cam):
     print "The red threshold is automatically determined to be", threshold
     return threshold
 
-background = cv2.imread('wood.png')
+FILENAME = 'wood_800.png'
+background = cv2.imread(FILENAME)
 cv2.imshow('Burn this page!', background)
 
 sf = ScreenFinder()
@@ -62,12 +63,12 @@ while True:
 
     cv2.imshow('Burn this page!', background)
     
-    k = cv2.waitKey(10)
+    k = cv2.waitKey(10) & 0xff
     if k == ord('a'):
         sf.find_screen_loop(cam, False)
         thresh = find_threshold(cam)
     elif k == ord('s'):
-        background = cv2.imread('wood.png')
+        background = cv2.imread(FILENAME)
     elif k == ord('d'):
         show_top_view = not show_top_view
         if show_top_view is False:
